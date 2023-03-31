@@ -133,3 +133,12 @@ Processing by Rails::WelcomeController#index as HTML
 Completed 200 OK in 15ms (Views: 6.2ms | ActiveRecord: 0.0ms | Allocations: 2614)
 
 
+Started GET "/api/v1/test" for 172.19.0.1 at 2023-04-01 00:12:42 +0900
+Processing by ApplicationController#test as HTML
+Completed 200 OK in 4ms (Views: 3.0ms | Allocations: 306)
+
+
+Started GET "/favicon.ico" for 172.19.0.1 at 2023-04-01 00:12:43 +0900
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
