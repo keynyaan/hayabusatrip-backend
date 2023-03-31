@@ -1,0 +1,8 @@
+# nginx
+/nginx/log/*
+!/nginx/log/.keep
+
+# env files
+.env*.local
+# Ignore master key for decrypting credentials and more.
+/config/master.key
