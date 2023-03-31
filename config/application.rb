@@ -24,12 +24,15 @@ module Backend
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-     config.generators do |g|
+    config.generators do |g|
       g.test_framework :rspec,
-        fixtures: false,
-        helper_specs: false,
-        view_specs: false,
-        routing_specs: false
+      fixtures: false,
+      helper_specs: false,
+      view_specs: false,
+      routing_specs: false
     end
+
+    config.time_zone = "Asia/Tokyo"
+    config.active_record.default_timezone = :local
   end
 end
