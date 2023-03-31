@@ -3,6 +3,6 @@
 !/nginx/log/.keep
 
 # env files
-.env*.local
+.env
 # Ignore master key for decrypting credentials and more.
 /config/master.key
