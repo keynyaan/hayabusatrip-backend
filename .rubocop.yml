@@ -1,0 +1,39 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  DisplayCopNames: true
+  Exclude:
+    - 'Gemfile'
+    - 'bin/**/*'
+    - 'config/environments/*'
+    - 'config/initializers/*'
+    - 'config/locales/*'
+    - 'db/**/*'
+    - 'lib/**/*'
+    - 'log/**/*'
+    - 'nginx/**/*'
+    - 'public/**/*'
+    - 'storage/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+
+Metrics:
+  Enabled: false
+
+Style:
+  Enabled: false
+
+Rails/FilePath:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false

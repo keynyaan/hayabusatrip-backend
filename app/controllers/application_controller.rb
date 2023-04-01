@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-
   def test
     test_json_obj = [
       { id: 1, title: "First Text", text: "最初のテキスト" },
@@ -7,5 +6,4 @@ class ApplicationController < ActionController::API
     ]
     render json: test_json_obj
   end
-
 end
