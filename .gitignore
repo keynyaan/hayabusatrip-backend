@@ -1,8 +1,17 @@
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+# log
+/log/*
+!/log/.keep
+
 # nginx
 /nginx/log/*
 !/nginx/log/.keep
 
+# tmp
+/tmp/*
+!/tmp/.keep
+
 # env files
 .env
-# Ignore master key for decrypting credentials and more.
-/config/master.key

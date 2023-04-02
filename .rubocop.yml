@@ -10,7 +10,6 @@ AllCops:
     - 'Gemfile'
     - 'bin/**/*'
     - 'config/environments/*'
-    - 'config/initializers/*'
     - 'config/locales/*'
     - 'db/**/*'
     - 'lib/**/*'
