@@ -19,10 +19,11 @@ services:
       - ./.env
     environment:
       - RAILS_ENV=development
-    command: bash -c "if [ ! -d /tmp/pids ]; then mkdir tmp/pids; fi && rm -f /tmp/pids/server.pid; bundle exec pumactl start || true"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec pumactl start"
     volumes:
       - .:/backend
       - ./tmp/sockets:/backend/tmp/sockets
+      - ./tmp/pids:/backend/tmp/pids
     tty: true
     stdin_open: true
     depends_on:

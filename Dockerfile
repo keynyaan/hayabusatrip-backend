@@ -38,6 +38,7 @@ WORKDIR /backend
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . /backend
 RUN mkdir -p tmp/sockets
+RUN mkdir -p tmp/pids
 VOLUME /backend/public
 VOLUME /backend/tmp
 COPY entrypoint.sh /usr/bin/
