@@ -41,7 +41,7 @@ jobs:
           done
 
       - name: Create DB
-        run: docker-compose exec -T app rails db:create
+        run: docker-compose exec -T app rails db:create || true
 
       - name: Run migrations
         run: docker-compose exec -T app rails db:migrate
