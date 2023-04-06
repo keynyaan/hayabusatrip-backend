@@ -31,8 +31,8 @@ jobs:
 
       - name: Build and run Docker containers
         run: |
-          docker compose build --no-cache
-          docker compose up -d
+          docker-compose build --no-cache
+          docker-compose up -d
 
       - name: Wait for DB connection
         run: |
@@ -41,19 +41,19 @@ jobs:
           done
 
       - name: Create DB
-        run: docker compose exec app rails db:create
+        run: docker-compose exec app rails db:create
 
       - name: Run migrations
-        run: docker compose exec app rails db:migrate
+        run: docker-compose exec app rails db:migrate
 
       - name: Run Rubocop
-        run: docker compose exec app bundle exec rubocop
+        run: docker-compose exec app bundle exec rubocop
 
       - name: Run RSpec
-        run: docker compose exec app bin/rspec
+        run: docker-compose exec app bin/rspec
 
       - name: Stop and remove Docker containers
-        run: docker compose down
+        run: docker-compose down
 
   build_and_push_image_web:
     needs: test
