@@ -42,3 +42,7 @@ services:
       - 80:80
     depends_on:
       - app
+
+networks:
+  default:
+    name: my_network
