@@ -1,0 +1,117 @@
+name: CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: branch|tag|SHA to checkout
+        default: 'main'
+        required: true
+  push:
+    branches:
+      - main
+
+env:
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+  TZ: ${{ secrets.TZ }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          echo RAILS_MASTER_KEY=${{ env.RAILS_MASTER_KEY }} >> .env
+          echo MYSQL_ROOT_PASSWORD=${{ env.MYSQL_ROOT_PASSWORD }} >> .env
+          echo TZ=${{ env.TZ }} >> .env
+
+      - name: Build and run Docker containers
+        run: |
+          docker compose build --no-cache
+          docker compose up -d
+
+      - name: Wait for DB connection
+        run: sleep 10
+
+      - name: Create DB
+        run: docker compose exec app rails db:create
+
+      - name: Run migrations
+        run: docker compose exec app rails db:migrate
+
+      - name: Run Rubocop
+        run: docker compose exec app bundle exec rubocop
+
+      - name: Run RSpec
+        run: docker compose exec app bin/rspec
+
+      - name: Stop and remove Docker containers
+        run: docker compose down
+
+  build_and_push_image_web:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          path: .
+          file: ./nginx/Dockerfile
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/hayabusatrip_web:latest
+
+  build_and_push_image_app:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          path: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/hayabusatrip_app:latest
+
+  deploy-ecs:
+    needs:
+      - build_and_push_image_web
+      - build_and_push_image_app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.ref }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: hayabusatrip-task
+          service: hayabusatrip-service
+          cluster: hayabusatrip-cluster
+          wait-for-service-stability: true
