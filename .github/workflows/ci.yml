@@ -15,6 +15,7 @@ env:
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   TZ: ${{ secrets.TZ }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
   test:
