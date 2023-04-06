@@ -41,16 +41,16 @@ jobs:
           done
 
       - name: Create DB
-        run: docker-compose exec app rails db:create
+        run: docker-compose exec -T app rails db:create
 
       - name: Run migrations
-        run: docker-compose exec app rails db:migrate
+        run: docker-compose exec -T app rails db:migrate
 
       - name: Run Rubocop
-        run: docker-compose exec app bundle exec rubocop
+        run: docker-compose exec -T app bundle exec rubocop
 
       - name: Run RSpec
-        run: docker-compose exec app bin/rspec
+        run: docker-compose exec -T app bin/rspec
 
       - name: Stop and remove Docker containers
         run: docker-compose down
