@@ -35,7 +35,10 @@ jobs:
           docker compose up -d
 
       - name: Wait for DB connection
-        run: sleep 10
+        run: |
+          for i in {1..30}; do
+            docker-compose exec -T db mysql -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} -e "SELECT 1;" && break || sleep 5
+          done
 
       - name: Create DB
         run: docker compose exec app rails db:create
