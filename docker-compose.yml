@@ -11,6 +11,21 @@ services:
       - 3306:3306
     volumes:
       - ./tmp/db:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '--password=$$MYSQL_ROOT_PASSWORD',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     container_name: hayabusatrip_app
@@ -24,10 +39,12 @@ services:
       - .:/backend
       - ./tmp/sockets:/backend/tmp/sockets
       - ./tmp/pids:/backend/tmp/pids
+      - ./log:/backend/log
     tty: true
     stdin_open: true
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   web:
     container_name: hayabusatrip_web
