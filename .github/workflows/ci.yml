@@ -32,7 +32,7 @@ jobs:
       - name: Build and run Docker containers
         run: |
           docker-compose build --no-cache
-          docker-compose up -d --network my_network
+          docker-compose up -d
 
       - name: Wait for DB connection
         run: |
@@ -41,7 +41,7 @@ jobs:
           done
 
       - name: Create DB
-        run: docker-compose exec -T app rails db:create
+        run: docker-compose exec -T app rails db:create || (docker-compose logs && exit 1)
 
       - name: Run migrations
         run: docker-compose exec -T app rails db:migrate
