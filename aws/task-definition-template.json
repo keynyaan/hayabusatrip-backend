@@ -1,0 +1,93 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "hayabusatrip_app",
+      "image": "AWS_ACCOUNT_ID_PLACEHOLDER.dkr.ecr.ap-northeast-1.amazonaws.com/hayabusatrip_app",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 3010,
+          "hostPort": 3010,
+          "protocol": "tcp",
+          "name": "hayabusatrip_app-3010-tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "RAILS_MASTER_KEY",
+          "value": "RAILS_MASTER_KEY_PLACEHOLDER"
+        },
+        {
+          "name": "DB_USERNAME",
+          "value": "DB_USERNAME_PLACEHOLDER"
+        },
+        {
+          "name": "DB_HOST",
+          "value": "DB_HOST_PLACEHOLDER"
+        },
+        {
+          "name": "DB_PORT",
+          "value": "DB_PORT_PLACEHOLDER"
+        },
+        {
+          "name": "DB_DATABASE",
+          "value": "DB_DATABASE_PLACEHOLDER"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "value": "DB_PASSWORD_PLACEHOLDER"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/hayabusatrip-task",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    },
+    {
+      "name": "hayabusatrip_web",
+      "image": "AWS_ACCOUNT_ID_PLACEHOLDER.dkr.ecr.ap-northeast-1.amazonaws.com/hayabusatrip_web",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp",
+          "name": "hayabusatrip_web-80-tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [
+        {
+          "sourceContainer": "hayabusatrip_app"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/hayabusatrip-task",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "family": "hayabusatrip-task",
+  "executionRoleArn": "arn:aws:iam::AWS_ACCOUNT_ID_PLACEHOLDER:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "registeredAt": "2023-04-04T21:43:01.889000+09:00",
+  "registeredBy": "arn:aws:iam::AWS_ACCOUNT_ID_PLACEHOLDER:root"
+}
