@@ -87,7 +87,5 @@
   "placementConstraints": [],
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
-  "memory": "1024",
-  "registeredAt": "2023-04-04T21:43:01.889000+09:00",
-  "registeredBy": "arn:aws:iam::AWS_ACCOUNT_ID_PLACEHOLDER:root"
+  "memory": "1024"
 }
