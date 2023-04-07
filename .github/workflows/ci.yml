@@ -42,7 +42,7 @@ jobs:
           done
 
       - name: Create DB
-        run: docker compose exec app rails db:create
+        run: docker-compose exec app rails db:create
 
       - name: Run migrations
         run: docker-compose exec -T app rails db:migrate
@@ -126,10 +126,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Create task-definition.json from template
+        run: |
+          sed "s/AWS_ACCOUNT_ID_PLACEHOLDER/${{ secrets.AWS_ACCOUNT_ID }}/" aws/task-definition-template.json > aws/task-definition.json
+          sed -i "s/RAILS_MASTER_KEY_PLACEHOLDER/${{ secrets.RAILS_MASTER_KEY }}/" aws/task-definition.json
+          sed -i "s/DB_USERNAME_PLACEHOLDER/${{ secrets.DB_USERNAME }}/" aws/task-definition.json
+          sed -i "s/DB_HOST_PLACEHOLDER/${{ secrets.DB_HOST }}/" aws/task-definition.json
+          sed -i "s/DB_PORT_PLACEHOLDER/${{ secrets.DB_PORT }}/" aws/task-definition.json
+          sed -i "s/DB_DATABASE_PLACEHOLDER/${{ secrets.DB_DATABASE }}/" aws/task-definition.json
+          sed -i "s/DB_PASSWORD_PLACEHOLDER/${{ secrets.DB_PASSWORD }}/" aws/task-definition.json
+
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: hayabusatrip-task
+          task-definition: aws/task-definition.json
           service: hayabusatrip-service
           cluster: hayabusatrip-cluster
           wait-for-service-stability: true
