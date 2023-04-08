@@ -91,6 +91,7 @@ GEM
     irb (1.6.3)
       reline (>= 0.3.0)
     json (2.6.3)
+    jwt (2.7.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -221,6 +222,7 @@ DEPENDENCIES
   bootsnap
   debug
   factory_bot_rails
+  jwt
   mysql2 (~> 0.5)
   puma (~> 5.0)
   rack-cors

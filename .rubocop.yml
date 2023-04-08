@@ -12,7 +12,6 @@ AllCops:
     - 'config/environments/*'
     - 'config/locales/*'
     - 'db/**/*'
-    - 'lib/**/*'
     - 'log/**/*'
     - 'nginx/**/*'
     - 'public/**/*'
@@ -33,4 +32,7 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/AnyInstance:
   Enabled: false
