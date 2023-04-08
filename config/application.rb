@@ -34,5 +34,6 @@ module Backend
 
     config.time_zone = "Asia/Tokyo"
     config.active_record.default_timezone = :local
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end
