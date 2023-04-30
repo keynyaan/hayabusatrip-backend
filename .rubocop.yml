@@ -36,3 +36,9 @@ RSpec/ExampleLength:
 
 RSpec/AnyInstance:
   Enabled: false
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
