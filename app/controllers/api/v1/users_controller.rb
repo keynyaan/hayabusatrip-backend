@@ -40,12 +40,12 @@ module Api
 
       # ユーザーの削除
       def destroy
-        user = User.find_by(uid: payload_uid)
+        user = User.find_by(uid: params[:uid])
         if user
           user.destroy
-          render json: { messages: ["#{payload_uid}のユーザーを削除しました。"] }
+          render json: { messages: ["#{params[:uid]}のユーザーを削除しました。"] }
         else
-          render json: { error: { messages: ["#{payload_uid}のユーザーが存在しません。"] } }, status: :not_found
+          render json: { error: { messages: ["#{params[:uid]}のユーザーが存在しません。"] } }, status: :not_found
         end
       end
 
