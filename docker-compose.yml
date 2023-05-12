@@ -34,6 +34,8 @@ services:
       - ./.env
     environment:
       - RAILS_ENV=development
+    # 本番用
+    # - RAILS_ENV=production
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec pumactl start"
     volumes:
       - .:/backend
