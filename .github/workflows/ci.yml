@@ -146,3 +146,7 @@ jobs:
           service: hayabusatrip-service
           cluster: hayabusatrip-cluster
           wait-for-service-stability: true
+
+      - name: Seed database
+        run: |
+          aws ecs run-task --cluster hayabusatrip-cluster --task-definition hayabusatrip-app-task --count 1 --launch-type FARGATE --started-by GitHubActions --overrides '{"containerOverrides": [{"name": "hayabusatrip_app","command": ["bundle","exec","rails","db:seed"]}]}'
