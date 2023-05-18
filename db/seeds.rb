@@ -1,7 +1,15 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+prefecture_names = %w[
+  hokkaido aomori iwate miyagi akita yamagata fukushima
+  ibaraki tochigi gunma saitama chiba tokyo kanagawa
+  niigata toyama ishikawa fukui yamanashi nagano gifu
+  shizuoka aichi mie shiga kyoto osaka hyogo nara
+  wakayama tottori shimane okayama hiroshima yamaguchi
+  tokushima kagawa ehime kochi fukuoka saga nagasaki
+  kumamoto oita miyazaki kagoshima okinawa
+]
+
+prefecture_names.each do |name|
+  Prefecture.find_or_create_by!(name: name) do |prefecture|
+    prefecture.image_path = "#{ENV['S3_URL']}prefectures/#{name}.jpg"
+  end
+end
