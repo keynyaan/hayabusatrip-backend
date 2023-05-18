@@ -135,6 +135,9 @@ jobs:
           sed -i "s/DB_PORT_PLACEHOLDER/${{ secrets.DB_PORT }}/" aws/task-definition.json
           sed -i "s/DB_DATABASE_PLACEHOLDER/${{ secrets.DB_DATABASE }}/" aws/task-definition.json
           sed -i "s/DB_PASSWORD_PLACEHOLDER/${{ secrets.DB_PASSWORD }}/" aws/task-definition.json
+          sed -i "s/AWS_REGION_PLACEHOLDER/${{ secrets.AWS_REGION }}/" aws/task-definition.json
+          sed -i "s/S3_BUCKET_NAME_PLACEHOLDER/${{ secrets.S3_BUCKET_NAME }}/" aws/task-definition.json
+          sed -i "s/S3_URL_PLACEHOLDER/${{ secrets.S3_URL }}/" aws/task-definition.json
 
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
