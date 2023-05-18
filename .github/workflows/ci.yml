@@ -150,8 +150,15 @@ jobs:
       - name: Get latest task definition revision
         id: get-latest-revision
         run: |
-          echo "::set-output name=revision::$(aws ecs list-task-definitions --family-prefix hayabusatrip-task --sort DESC --max-items 1 --query 'taskDefinitionArns[0]' --output text | awk -F ':' '{print $NF}')"
+          revision=$(aws ecs list-task-definitions --family-prefix hayabusatrip-task --sort DESC --max-items 1 --query 'taskDefinitionArns[0]' --output text | awk -F ':' '{print $NF}')
+          echo "revision=$revision" >> $GITHUB_ENV
 
       - name: Seed database
         run: |
-          aws ecs run-task --cluster hayabusatrip-cluster --task-definition hayabusatrip-task:${{ steps.get-latest-revision.outputs.revision }} --count 1 --launch-type FARGATE --started-by GitHubActions --overrides '{"containerOverrides": [{"name": "hayabusatrip_app","command": ["bundle","exec","rails","db:seed"]}]}'
+          aws ecs run-task --cluster hayabusatrip-cluster \
+          --task-definition hayabusatrip-task:${{ env.revision }} \
+          --count 1 \
+          --launch-type FARGATE \
+          --started-by GitHubActions \
+          --network-configuration "awsvpcConfiguration={subnets=[${{ secrets.SUBNETS }}],securityGroups=[${{ secrets.SECURITY_GROUPS }}],assignPublicIp=ENABLED}" \
+          --overrides '{"containerOverrides": [{"name": "hayabusatrip_app","command": ["bundle","exec","rails","db:seed"]}]}'
