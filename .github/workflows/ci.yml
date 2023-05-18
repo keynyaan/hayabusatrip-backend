@@ -25,6 +25,7 @@ jobs:
           echo TZ=${{ secrets.TZ }} >> .env
           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
           echo S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} >> .env
+          echo S3_URL=${{ secrets.S3_URL }} >> .env
 
       - name: Build and run Docker containers
         run: |
@@ -42,6 +43,9 @@ jobs:
 
       - name: Run migrations
         run: docker-compose exec -T app rails db:migrate
+
+      - name: Load seed data
+        run: docker-compose exec -T app rails db:seed
 
       - name: Run Rubocop
         run: docker-compose exec -T app bundle exec rubocop

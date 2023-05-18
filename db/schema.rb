@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_28_083909) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_18_045614) do
+  create_table "prefectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "image_path", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "uid", null: false
     t.datetime "created_at", null: false
@@ -21,5 +28,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_083909) do
     t.date "last_reset_date"
     t.datetime "last_login_time"
   end
-
 end
