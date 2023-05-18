@@ -147,6 +147,11 @@ jobs:
           cluster: hayabusatrip-cluster
           wait-for-service-stability: true
 
+      - name: Get latest task definition revision
+        id: get-latest-revision
+        run: |
+          echo "::set-output name=revision::$(aws ecs list-task-definitions --family-prefix hayabusatrip-task --sort DESC --max-items 1 --query 'taskDefinitionArns[0]' --output text | awk -F ':' '{print $NF}')"
+
       - name: Seed database
         run: |
-          aws ecs run-task --cluster hayabusatrip-cluster --task-definition hayabusatrip-app-task --count 1 --launch-type FARGATE --started-by GitHubActions --overrides '{"containerOverrides": [{"name": "hayabusatrip_app","command": ["bundle","exec","rails","db:seed"]}]}'
+          aws ecs run-task --cluster hayabusatrip-cluster --task-definition hayabusatrip-task:${{ steps.get-latest-revision.outputs.revision }} --count 1 --launch-type FARGATE --started-by GitHubActions --overrides '{"containerOverrides": [{"name": "hayabusatrip_app","command": ["bundle","exec","rails","db:seed"]}]}'
