@@ -150,7 +150,7 @@ jobs:
       - name: Get latest task definition revision
         id: get-latest-revision
         run: |
-          revision=$(aws ecs list-task-definitions --family-prefix hayabusatrip-task --sort DESC --max-items 1 --query 'taskDefinitionArns[0]' --output text | awk -F ':' '{print $NF}')
+          revision=$(aws ecs list-task-definitions --family-prefix hayabusatrip-task --sort DESC --max-items 1 --query 'taskDefinitionArns[0]' --output text | awk -F ':' '{print $NF}' | awk 'NR==1{print $1}')
           echo "revision=$revision" >> $GITHUB_ENV
 
       - name: Seed database
