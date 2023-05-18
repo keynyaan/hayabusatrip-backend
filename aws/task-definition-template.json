@@ -37,6 +37,18 @@
         {
           "name": "DB_PASSWORD",
           "value": "DB_PASSWORD_PLACEHOLDER"
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "AWS_REGION_PLACEHOLDER"
+        },
+        {
+          "name": "S3_BUCKET_NAME",
+          "value": "S3_BUCKET_NAME_PLACEHOLDER"
+        },
+        {
+          "name": "S3_URL",
+          "value": "S3_URL_PLACEHOLDER"
         }
       ],
       "mountPoints": [],
