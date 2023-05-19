@@ -23,6 +23,8 @@ jobs:
           echo RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} >> .env
           echo MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} >> .env
           echo TZ=${{ secrets.TZ }} >> .env
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
           echo S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} >> .env
           echo S3_URL=${{ secrets.S3_URL }} >> .env
@@ -130,11 +132,13 @@ jobs:
         run: |
           sed "s#AWS_ACCOUNT_ID_PLACEHOLDER#${{ secrets.AWS_ACCOUNT_ID }}#" aws/task-definition-template.json > aws/task-definition.json
           sed -i "s#RAILS_MASTER_KEY_PLACEHOLDER#${{ secrets.RAILS_MASTER_KEY }}#" aws/task-definition.json
-          sed -i "s#DB_USERNAME_PLACEHOLDER#${{ secrets.DB_USERNAME }}#" aws/task-definition.json
+          sed -i "s#DB_DATABASE_PLACEHOLDER#${{ secrets.DB_DATABASE }}#" aws/task-definition.json
           sed -i "s#DB_HOST_PLACEHOLDER#${{ secrets.DB_HOST }}#" aws/task-definition.json
           sed -i "s#DB_PORT_PLACEHOLDER#${{ secrets.DB_PORT }}#" aws/task-definition.json
-          sed -i "s#DB_DATABASE_PLACEHOLDER#${{ secrets.DB_DATABASE }}#" aws/task-definition.json
+          sed -i "s#DB_USERNAME_PLACEHOLDER#${{ secrets.DB_USERNAME }}#" aws/task-definition.json
           sed -i "s#DB_PASSWORD_PLACEHOLDER#${{ secrets.DB_PASSWORD }}#" aws/task-definition.json
+          sed -i "s#AWS_ACCESS_KEY_ID_PLACEHOLDER#${{ secrets.AWS_ACCESS_KEY_ID }}#" aws/task-definition.json
+          sed -i "s#AWS_SECRET_ACCESS_KEY_PLACEHOLDER#${{ secrets.AWS_SECRET_ACCESS_KEY }}#" aws/task-definition.json
           sed -i "s#AWS_REGION_PLACEHOLDER#${{ secrets.AWS_REGION }}#" aws/task-definition.json
           sed -i "s#S3_BUCKET_NAME_PLACEHOLDER#${{ secrets.S3_BUCKET_NAME }}#" aws/task-definition.json
           sed -i "s#S3_URL_PLACEHOLDER#${{ secrets.S3_URL }}#" aws/task-definition.json
