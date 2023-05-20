@@ -1,4 +1,5 @@
 class Trip < ApplicationRecord
+  has_many :spots, dependent: :destroy
   belongs_to :user
   belongs_to :prefecture
 
@@ -11,7 +12,7 @@ class Trip < ApplicationRecord
   private
 
   def end_date_within_range
-    return if end_date.nil? || start_date.nil?
+    return if end_date.blank? || start_date.blank?
 
     if end_date < start_date
       errors.add(:end_date, "終了日は開始日の後に設定してください。")
