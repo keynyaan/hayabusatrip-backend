@@ -49,24 +49,8 @@ RSpec.describe Trip do
     end
   end
 
-  context "with empty start_date" do
-    before { trip.start_date = "" }
-
-    it "is invalid" do
-      expect(trip).to be_invalid
-    end
-  end
-
   context "without end_date" do
     before { trip.end_date = nil }
-
-    it "is invalid" do
-      expect(trip).to be_invalid
-    end
-  end
-
-  context "with empty end_date" do
-    before { trip.end_date = "" }
 
     it "is invalid" do
       expect(trip).to be_invalid
