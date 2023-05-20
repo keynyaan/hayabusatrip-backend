@@ -10,12 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_18_045614) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_20_032944) do
   create_table "prefectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "image_path", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "trips", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "prefecture_id", null: false
+    t.string "title", limit: 30, null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.string "memo", limit: 1000
+    t.string "image_path", null: false
+    t.boolean "is_public", default: false, null: false
+    t.string "trip_token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["prefecture_id"], name: "index_trips_on_prefecture_id"
+    t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -28,4 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_045614) do
     t.date "last_reset_date"
     t.datetime "last_login_time"
   end
+
+  add_foreign_key "trips", "prefectures"
+  add_foreign_key "trips", "users"
 end
