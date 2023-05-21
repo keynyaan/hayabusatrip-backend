@@ -172,4 +172,13 @@ RSpec.describe Trip do
       expect(trip).to be_invalid
     end
   end
+
+  context "with non-unique trip_token" do
+    let(:trip_with_same_token) { build(:trip, trip_token: trip.trip_token) }
+
+    it "is invalid" do
+      trip.save
+      expect(trip_with_same_token).to be_invalid
+    end
+  end
 end
