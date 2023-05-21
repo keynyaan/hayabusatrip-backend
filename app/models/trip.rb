@@ -7,6 +7,7 @@ class Trip < ApplicationRecord
   validates :title, length: { maximum: 30 }
   validates :memo, length: { maximum: 1000 }
   validates :is_public, inclusion: { in: [true, false] }
+  validates :trip_token, uniqueness: true
   validate :end_date_within_range
 
   private
