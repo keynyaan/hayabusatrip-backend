@@ -4,8 +4,8 @@ FactoryBot.define do
     spot_icon { "location-dot" }
     title { "スポットのテスト" }
     date { Time.zone.today }
-    start_time { Time.zone.now }
-    end_time { 1.hour.from_now }
+    start_time { '9:00' }
+    end_time { '11:00' }
     cost { 1000 }
     memo { "メモのテスト" }
   end

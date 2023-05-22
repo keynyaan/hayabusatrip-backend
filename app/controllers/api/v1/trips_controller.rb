@@ -1,9 +1,6 @@
 module Api
   module V1
     class TripsController < ApplicationController
-      # idTokenの検証をスキップする
-      # skip_before_action :authenticate
-
       # 特定の旅行プランの取得
       def show
         @trip = Trip.find_by(trip_token: params[:trip_token])
