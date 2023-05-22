@@ -3,6 +3,7 @@ class Spot < ApplicationRecord
 
   validates :spot_icon, :title, :date, :start_time, :end_time, :cost, presence: true
   validates :title, length: { maximum: 30 }
+  validates :memo, length: { maximum: 50 }
   validate :end_time_after_start_time
 
   private

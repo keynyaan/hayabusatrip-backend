@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_21_051717) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_21_132337) do
   create_table "prefectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "image_path", null: false
@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_051717) do
     t.time "start_time", null: false
     t.time "end_time", null: false
     t.integer "cost", default: 0, null: false
-    t.string "memo"
+    t.string "memo", limit: 50, default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["trip_id"], name: "index_spots_on_trip_id"

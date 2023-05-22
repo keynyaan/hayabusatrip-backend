@@ -83,7 +83,7 @@ RSpec.describe Spot do
 
   context "with start_time equal to end_time" do
     before do
-      time = Time.zone.now
+      time = '12:00'
       spot.start_time = time
       spot.end_time = time
     end
@@ -95,8 +95,8 @@ RSpec.describe Spot do
 
   context "with start_time less than end_time" do
     before do
-      spot.start_time = Time.zone.now
-      spot.end_time = 1.hour.from_now
+      spot.start_time = '12:00'
+      spot.end_time = '13:00'
     end
 
     it "is valid" do
@@ -106,8 +106,8 @@ RSpec.describe Spot do
 
   context "with start_time greater than end_time" do
     before do
-      spot.start_time = 1.hour.from_now
-      spot.end_time = Time.zone.now
+      spot.start_time = '12:00'
+      spot.end_time = '11:00'
     end
 
     it "is invalid" do
@@ -117,6 +117,22 @@ RSpec.describe Spot do
 
   context "without cost" do
     before { spot.cost = nil }
+
+    it "is invalid" do
+      expect(spot).to be_invalid
+    end
+  end
+
+  context "with memo length equal to maximum limit" do
+    before { spot.memo = "a" * 50 }
+
+    it "is valid" do
+      expect(spot).to be_valid
+    end
+  end
+
+  context "with memo length more than maximum limit" do
+    before { spot.memo = "a" * 51 }
 
     it "is invalid" do
       expect(spot).to be_invalid
