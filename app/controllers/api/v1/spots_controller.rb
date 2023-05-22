@@ -3,6 +3,12 @@ module Api
     class SpotsController < ApplicationController
       before_action :set_trip
 
+      # 特定の旅行プラン中の旅行スポットの一覧取得
+      def index
+        @spots = @trip.spots
+        render json: @spots
+      end
+
       # 特定の旅行スポットの取得
       def show
         @spot = @trip.spots.find_by(id: params[:id])
@@ -51,8 +57,8 @@ module Api
       private
 
       def set_trip
-        Rails.logger.info "Trip Token in params: #{params[:trip_trip_token]}"
-        @trip = Trip.find_by!(trip_token: params[:trip_trip_token])
+        @user = User.find_by!(uid: params[:user_uid])
+        @trip = @user.trips.find_by!(trip_token: params[:trip_trip_token])
       end
 
       # 旅行スポット用のパラメーター
