@@ -28,6 +28,9 @@ Style:
 Rails/FilePath:
   Enabled: false
 
+Rails/Pluck:
+  Enabled: false
+
 RSpec/MultipleExpectations:
   Enabled: false
 
