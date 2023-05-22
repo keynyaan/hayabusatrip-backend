@@ -7,11 +7,12 @@ Rails.application.routes.draw do
 
   namespace "api" do
     namespace "v1" do
-      resources :users, only: [:index, :show, :create, :update, :destroy], param: :uid
-      resources :prefectures, only: [:index, :show]
-      resources :trips, param: :trip_token, only: [:show, :create, :update, :destroy] do
-        resources :spots, only: [:show, :create, :update, :destroy]
+      resources :users, only: [:index, :show, :create, :update, :destroy], param: :uid do
+        resources :trips, only: [:index, :show, :create, :update, :destroy], param: :trip_token do
+          resources :spots, only: [:index, :show, :create, :update, :destroy], param: :id
+        end
       end
+      resources :prefectures, only: [:index, :show]
       post '/s3/upload', to: 's3#upload'
     end
   end
