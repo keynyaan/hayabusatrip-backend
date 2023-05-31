@@ -25,13 +25,15 @@ module Api
       def create
         @trip = User.find_by(uid: params[:user_uid])&.trips&.build(trip_params.except(:trip_token))
 
-        # 指定された都道府県のデフォルト画像を設定
-        prefecture = Prefecture.find_by(id: params[:trip][:prefecture_id])
-        if prefecture
-          @trip.image_path = prefecture.image_path
-        else
-          render json: { error: { messages: ["指定された都道府県が見つかりませんでした。"] } }, status: :not_found
-          return
+        # パラメーターにimage_pathが設定されていないときのみ、指定された都道府県のデフォルト画像を設定
+        unless params[:trip][:image_path]
+          prefecture = Prefecture.find_by(id: params[:trip][:prefecture_id])
+          if prefecture
+            @trip.image_path = prefecture.image_path
+          else
+            render json: { error: { messages: ["指定された都道府県が見つかりませんでした。"] } }, status: :not_found
+            return
+          end
         end
 
         # 16桁のランダムで一意な英数字のtrip_tokenを生成
