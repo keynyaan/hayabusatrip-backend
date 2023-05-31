@@ -50,7 +50,12 @@ RSpec.describe Api::V1::TripsController do
   describe "POST /api/v1/users/:user_uid/trips" do
     let(:prefecture) { create(:prefecture) }
     let(:valid_params) { { user_uid: user.uid, trip: attributes_for(:trip).merge(prefecture_id: prefecture.id) } }
-    let(:invalid_prefecture_params) { { user_uid: user.uid, trip: attributes_for(:trip).merge(prefecture_id: 0) } }
+    let(:invalid_prefecture_params) {
+      { user_uid: user.uid, trip: attributes_for(:trip).except(:image_path).merge(prefecture_id: 0) }
+    }
+    let(:invalid_title_params) {
+      { user_uid: user.uid, trip: attributes_for(:trip).merge(prefecture_id: prefecture.id, title: "") }
+    }
 
     context "with valid parameters" do
       it "creates a new trip" do
@@ -65,7 +70,7 @@ RSpec.describe Api::V1::TripsController do
       end
     end
 
-    context "with invalid parameters" do
+    context "with invalid parameters without image path" do
       it "does not create a new trip with invalid prefecture_id" do
         expect {
           post :create, params: invalid_prefecture_params
@@ -75,6 +80,19 @@ RSpec.describe Api::V1::TripsController do
       it "returns http not_found with invalid prefecture_id" do
         post :create, params: invalid_prefecture_params
         expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "with invalid title" do
+      it "does not create a new trip with empty title" do
+        expect {
+          post :create, params: invalid_title_params
+        }.not_to change(Trip, :count)
+      end
+
+      it "returns http unprocessable_entity with empty title" do
+        post :create, params: invalid_title_params
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
