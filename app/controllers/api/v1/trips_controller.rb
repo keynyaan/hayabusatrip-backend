@@ -68,7 +68,7 @@ module Api
         @trip = Trip.find_by(trip_token: params[:trip_token])
         if @trip && @trip.user.uid == params[:user_uid]
           @trip.destroy
-          render json: { messages: ["#{params[:trip_token]}の旅行プランを削除しました。"] }
+          head :no_content
         else
           render json: { error: { messages: ["#{params[:trip_token]}の旅行プランが存在しません。"] } }, status: :not_found
         end
