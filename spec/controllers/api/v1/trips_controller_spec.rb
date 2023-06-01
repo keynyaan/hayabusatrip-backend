@@ -146,9 +146,9 @@ RSpec.describe Api::V1::TripsController do
         }.to change(Trip, :count).by(-1)
       end
 
-      it "returns http success" do
+      it "returns no content" do
         delete :destroy, params: { user_uid: user.uid, trip_token: trip.trip_token }
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:no_content)
       end
     end
 
