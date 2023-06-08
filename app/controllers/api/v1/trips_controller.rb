@@ -16,9 +16,12 @@ module Api
 
       # 特定の旅行プランの取得
       def show
-        @trip = Trip.find_by(trip_token: params[:trip_token])
+        if params[:user_uid]
+          @trip = User.find_by(uid: params[:user_uid])&.trips&.find_by(trip_token: params[:trip_token])
+        else
+          @trip = Trip.where(is_public: true).find_by(trip_token: params[:trip_token])
+        end
 
-        # 非ログインユーザーも公開されている旅行プランなら取得可能
         if @trip
           render json: @trip
         else

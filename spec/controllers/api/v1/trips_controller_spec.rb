@@ -47,6 +47,37 @@ RSpec.describe Api::V1::TripsController do
     end
   end
 
+  describe "GET /api/v1/trips/:trip_token" do
+    let!(:public_trip) { create(:trip, is_public: true) }
+    let!(:private_trip) { create(:trip, is_public: false) }
+
+    context "when public trip exists" do
+      it "returns http success" do
+        get :show, params: { trip_token: public_trip.trip_token }
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns correct trip data" do
+        get :show, params: { trip_token: public_trip.trip_token }
+        expect(response.parsed_body["trip_token"]).to eq(public_trip.trip_token)
+      end
+    end
+
+    context "when public trip does not exist" do
+      it "returns not found" do
+        get :show, params: { trip_token: "nonexistent_token" }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "when trip is not public" do
+      it "returns not found" do
+        get :show, params: { trip_token: private_trip.trip_token }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe "POST /api/v1/users/:user_uid/trips" do
     let(:prefecture) { create(:prefecture) }
     let(:valid_params) { { user_uid: user.uid, trip: attributes_for(:trip).merge(prefecture_id: prefecture.id) } }

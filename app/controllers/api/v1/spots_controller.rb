@@ -59,8 +59,12 @@ module Api
       private
 
       def set_trip
-        @user = User.find_by!(uid: params[:user_uid])
-        @trip = @user.trips.find_by!(trip_token: params[:trip_trip_token])
+        if params[:user_uid]
+          @user = User.find_by!(uid: params[:user_uid])
+          @trip = @user.trips.find_by!(trip_token: params[:trip_trip_token])
+        else
+          @trip = Trip.find_by!(trip_token: params[:trip_trip_token], is_public: true)
+        end
       end
 
       # 旅行スポット用のパラメーター

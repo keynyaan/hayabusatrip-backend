@@ -12,6 +12,9 @@ Rails.application.routes.draw do
           resources :spots, only: [:index, :show, :create, :update, :destroy], param: :id
         end
       end
+      resources :trips, only: [:show], param: :trip_token do
+        resources :spots, only: [:index], param: :id
+      end
       resources :prefectures, only: [:index, :show]
       post '/s3/upload', to: 's3#upload'
     end

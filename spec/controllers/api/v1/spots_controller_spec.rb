@@ -25,6 +25,36 @@ RSpec.describe Api::V1::SpotsController do
     end
   end
 
+  describe "GET /api/v1/trips/:trip_token/spots" do
+    let!(:trip) { create(:trip, is_public: is_public) }
+    let!(:spot1) { create(:spot, trip: trip) }
+    let!(:spot2) { create(:spot, trip: trip) }
+
+    context "when the trip is public" do
+      let(:is_public) { true }
+
+      it "returns http success" do
+        get :index, params: { trip_trip_token: trip.trip_token }
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns all spots of the public trip" do
+        get :index, params: { trip_trip_token: trip.trip_token }
+        expect(response.parsed_body.map { |s| s["id"] }).to contain_exactly(spot1.id, spot2.id)
+      end
+    end
+
+    context "when the trip is private" do
+      let(:is_public) { false }
+
+      it "returns not found" do
+        expect {
+          get :index, params: { trip_trip_token: trip.trip_token }
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   describe "GET /api/v1/users/:user_uid/trips/:trip_trip_token/spots/:id" do
     let!(:spot) { create(:spot, trip: trip) }
 
