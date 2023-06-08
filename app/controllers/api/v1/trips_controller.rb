@@ -1,6 +1,9 @@
 module Api
   module V1
     class TripsController < ApplicationController
+      # idTokenの検証をスキップする
+      skip_before_action :authenticate, only: [:show]
+
       # ユーザーの旅行プランの一覧取得
       def index
         @trips = User.find_by(uid: params[:user_uid])&.trips
@@ -14,7 +17,9 @@ module Api
       # 特定の旅行プランの取得
       def show
         @trip = Trip.find_by(trip_token: params[:trip_token])
-        if @trip && @trip.user.uid == params[:user_uid]
+
+        # 非ログインユーザーも公開されている旅行プランなら取得可能
+        if @trip
           render json: @trip
         else
           render json: { error: { messages: ["指定された旅行プランが見つかりませんでした。"] } }, status: :not_found
