@@ -129,9 +129,9 @@ RSpec.describe Api::V1::UsersController do
         }.to change(User, :count).by(-1)
       end
 
-      it "returns http success" do
+      it "returns no content" do
         delete :destroy, params: { uid: user.uid }
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:no_content)
       end
     end
 

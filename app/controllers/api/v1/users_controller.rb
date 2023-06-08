@@ -43,7 +43,7 @@ module Api
         user = User.find_by(uid: params[:uid])
         if user
           user.destroy
-          render json: { messages: ["#{params[:uid]}のユーザーを削除しました。"] }
+          head :no_content
         else
           render json: { error: { messages: ["#{params[:uid]}のユーザーが存在しません。"] } }, status: :not_found
         end

@@ -48,7 +48,7 @@ module Api
         @spot = @trip.spots.find_by(id: params[:id])
         if @spot
           @spot.destroy
-          render json: { messages: ["#{params[:id]}の旅行スポットを削除しました。"] }
+          head :no_content
         else
           render json: { error: { messages: ["#{params[:id]}の旅行スポットが存在しません。"] } }, status: :not_found
         end
