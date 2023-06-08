@@ -2,6 +2,8 @@ module Api
   module V1
     class SpotsController < ApplicationController
       before_action :set_trip
+      # idTokenの検証をスキップする
+      skip_before_action :authenticate, only: [:index, :show]
 
       # 特定の旅行プラン中の旅行スポットの一覧取得
       def index
