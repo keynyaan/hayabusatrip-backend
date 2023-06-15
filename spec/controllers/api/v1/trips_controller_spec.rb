@@ -129,8 +129,12 @@ RSpec.describe Api::V1::TripsController do
   end
 
   describe "PUT /api/v1/users/:user_uid/trips/:trip_token" do
-    let!(:trip) { create(:trip, user: user) }
-    let(:new_attributes) { { user_uid: user.uid, trip_token: trip.trip_token, trip: { title: "Updated Trip" } } }
+    let!(:trip) { create(:trip, user: user, prefecture: prefecture) }
+    let!(:prefecture) { create(:prefecture) }
+    let(:new_attributes) {
+      { user_uid: user.uid, trip_token: trip.trip_token,
+        trip: { title: "Updated Trip", prefecture_id: prefecture.id } }
+    }
     let(:invalid_attributes) { { user_uid: user.uid, trip_token: trip.trip_token, trip: { title: "" } } }
 
     context "with valid parameters" do
@@ -138,6 +142,12 @@ RSpec.describe Api::V1::TripsController do
         put :update, params: new_attributes
         trip.reload
         expect(trip.title).to eq("Updated Trip")
+      end
+
+      it "sets the image_path based on the prefecture" do
+        put :update, params: new_attributes
+        trip.reload
+        expect(trip.image_path).to eq(prefecture.image_path)
       end
 
       it "returns http success" do
