@@ -61,6 +61,17 @@ module Api
       def update
         @trip = Trip.find_by(trip_token: params[:trip_token])
         if @trip && @trip.user.uid == params[:user_uid]
+          # パラメーターにprefecture_idが設定されたときのみ、旅行プランの画像を指定された都道府県の画像に設定
+          if params[:trip][:prefecture_id]
+            prefecture = Prefecture.find_by(id: params[:trip][:prefecture_id])
+            if prefecture
+              params[:trip][:image_path] = prefecture.image_path
+            else
+              render json: { error: { messages: ["指定された都道府県が見つかりませんでした。"] } }, status: :not_found
+              return
+            end
+          end
+
           if @trip.update(trip_params)
             render json: @trip
           else
