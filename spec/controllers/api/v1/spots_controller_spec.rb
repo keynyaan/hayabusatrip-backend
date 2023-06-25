@@ -154,24 +154,49 @@ RSpec.describe Api::V1::SpotsController do
   end
 
   describe "DELETE /api/v1/users/:user_uid/trips/:trip_trip_token/spots/:id" do
-    let!(:spot) { create(:spot, trip: trip) }
+    let!(:spot1) { create(:spot, trip: trip, date: Time.zone.today) }
+    let!(:spot2) { create(:spot, trip: trip, date: Time.zone.today) }
+    let!(:spot3) { create(:spot, trip: trip, date: Time.zone.tomorrow) }
 
-    context "when spot exists" do
+    context "when spot id exists" do
       it "destroys the requested spot" do
         expect {
-          delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot.id }
+          delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot1.id }
         }.to change(Spot, :count).by(-1)
       end
 
       it "returns no content" do
-        delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot.id }
+        delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot1.id }
         expect(response).to have_http_status(:no_content)
       end
     end
 
-    context "when spot does not exist" do
+    context "when spot id does not exist but date exists" do
+      it "destroys all spots of the given date" do
+        expect {
+          delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, date: Time.zone.today }
+        }.to change(Spot, :count).by(-2)
+      end
+
+      it "returns no content" do
+        delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, date: Time.zone.today }
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context "when neither spot id nor date exists" do
+      it "does not destroy any spot" do
+        expect {
+          delete :destroy,
+                 params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id",
+                           date: Time.zone.yesterday }
+        }.not_to change(Spot, :count)
+      end
+
       it "returns not found" do
-        delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id" }
+        delete :destroy,
+               params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id",
+                         date: Time.zone.yesterday }
         expect(response).to have_http_status(:not_found)
       end
     end

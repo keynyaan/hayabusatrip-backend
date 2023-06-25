@@ -47,12 +47,17 @@ module Api
 
       # 旅行スポットの削除
       def destroy
-        @spot = @trip.spots.find_by(id: params[:id])
-        if @spot
-          @spot.destroy
+        if params[:date]
+          @spots = @trip.spots.where(date: params[:date])
+        else
+          @spots = @trip.spots.where(id: params[:id])
+        end
+
+        if @spots.exists?
+          @spots.destroy_all
           head :no_content
         else
-          render json: { error: { messages: ["#{params[:id]}の旅行スポットが存在しません。"] } }, status: :not_found
+          render json: { error: { messages: ["指定した旅行スポットが存在しません。"] } }, status: :not_found
         end
       end
 
