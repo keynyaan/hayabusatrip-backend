@@ -49,15 +49,16 @@ module Api
       def destroy
         if params[:date]
           @spots = @trip.spots.where(date: params[:date])
-        else
-          @spots = @trip.spots.where(id: params[:id])
-        end
-
-        if @spots.exists?
-          @spots.destroy_all
+          @spots.destroy_all if @spots.exists?
           head :no_content
         else
-          render json: { error: { messages: ["指定した旅行スポットが存在しません。"] } }, status: :not_found
+          @spots = @trip.spots.where(id: params[:id])
+          if @spots.exists?
+            @spots.destroy_all
+            head :no_content
+          else
+            render json: { error: { messages: ["指定した旅行スポットが存在しません。"] } }, status: :not_found
+          end
         end
       end
 
