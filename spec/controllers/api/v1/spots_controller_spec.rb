@@ -188,16 +188,27 @@ RSpec.describe Api::V1::SpotsController do
       it "does not destroy any spot" do
         expect {
           delete :destroy,
-                 params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id",
-                           date: Time.zone.yesterday }
+                 params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id" }
         }.not_to change(Spot, :count)
       end
 
       it "returns not found" do
         delete :destroy,
-               params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id",
-                         date: Time.zone.yesterday }
+               params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id" }
         expect(response).to have_http_status(:not_found)
+      end
+
+      it "does not destroy any spot when the date does not exist" do
+        expect {
+          delete :destroy,
+                 params: { user_uid: user.uid, trip_trip_token: trip.trip_token, date: Time.zone.yesterday }
+        }.not_to change(Spot, :count)
+      end
+
+      it "returns no content when the date does not exist" do
+        delete :destroy,
+               params: { user_uid: user.uid, trip_trip_token: trip.trip_token, date: Time.zone.yesterday }
+        expect(response).to have_http_status(:no_content)
       end
     end
   end
