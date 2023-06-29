@@ -33,15 +33,32 @@ module Api
 
       # 旅行スポットの更新
       def update
-        @spot = @trip.spots.find_by(id: params[:id])
-        if @spot
-          if @spot.update(spot_params)
-            render json: @spot
-          else
-            render json: { error: { messages: ["旅行スポットの更新に失敗しました。"] } }, status: :unprocessable_entity
+        if params[:base_date] && params[:date_offset]
+          base_date = Date.parse(params[:base_date])
+          date_offset = params[:date_offset].to_i
+
+          begin
+            @trip.spots.each do |spot|
+              if spot.date > base_date
+                new_date = (spot.date + date_offset).strftime('%Y-%m-%d')
+                spot.update!(date: new_date)
+              end
+            end
+            render json: @trip.spots
+          rescue
+            render json: { error: { messages: ["日付の更新に失敗しました。"] } }, status: :unprocessable_entity
           end
         else
-          render json: { error: { messages: ["指定された旅行スポットが見つかりませんでした。"] } }, status: :not_found
+          @spot = @trip.spots.find_by(id: params[:id])
+          if @spot
+            if @spot.update(spot_params)
+              render json: @spot
+            else
+              render json: { error: { messages: ["旅行スポットの更新に失敗しました。"] } }, status: :unprocessable_entity
+            end
+          else
+            render json: { error: { messages: ["指定された旅行スポットが見つかりませんでした。"] } }, status: :not_found
+          end
         end
       end
 

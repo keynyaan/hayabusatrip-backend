@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :show, :create, :update, :destroy], param: :uid do
         resources :trips, only: [:index, :show, :create, :update, :destroy], param: :trip_token do
           resources :spots, only: [:index, :show, :create, :update, :destroy], param: :id
+          put '/spots', to: 'spots#update'
           delete '/spots', to: 'spots#destroy'
         end
       end
