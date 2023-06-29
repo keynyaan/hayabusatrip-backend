@@ -135,20 +135,58 @@ RSpec.describe Api::V1::SpotsController do
         expect(spot.title).not_to be_empty
       end
 
-      it "returns ht
-           tp unprocessable_entity" do
+      it "returns http unprocessable_entity" do
         put :update,
             params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot.id }.merge(invalid_attributes)
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
-    context "when sp
-           ot does not exist" do
+    context "when spot does not exist" do
       it "returns not found" do
         put :update,
             params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: "nonexistent_id" }.merge(new_attributes)
         expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "with base_date and date_offset parameters" do
+      let!(:spot1) { create(:spot, trip: trip, date: Time.zone.today) }
+      let!(:spot2) { create(:spot, trip: trip, date: Time.zone.tomorrow) }
+      let(:base_date) { Time.zone.today.strftime('%Y-%m-%d') }
+      let(:date_offset) { 1 }
+      let(:params) do
+        {
+          user_uid: user.uid,
+          trip_trip_token: trip.trip_token,
+          base_date: base_date,
+          date_offset: date_offset
+        }
+      end
+
+      it "updates spots with dates after base_date" do
+        put :update, params: params
+        spot1.reload
+        spot2.reload
+        expect(spot1.date).to eq(Time.zone.today)
+        expect(spot2.date).to eq(Time.zone.today + 2.days)
+      end
+
+      it "returns http success" do
+        put :update, params: params
+        expect(response).to have_http_status(:success)
+      end
+
+      context "when date update fails" do
+        before do
+          allow_any_instance_of(Spot).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
+        end
+
+        it "returns http unprocessable_entity and error message" do
+          put :update, params: params
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.parsed_body["error"]["messages"]).to include("日付の更新に失敗しました。")
+        end
       end
     end
   end
