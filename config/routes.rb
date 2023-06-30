@@ -13,6 +13,7 @@ Rails.application.routes.draw do
           put '/spots', to: 'spots#update'
           delete '/spots', to: 'spots#destroy'
         end
+        post '/trips', to: 'trips#create'
       end
       resources :trips, only: [:show], param: :trip_token do
         resources :spots, only: [:index], param: :id
