@@ -31,29 +31,67 @@ module Api
 
       # 旅行プランの登録
       def create
-        @trip = User.find_by(uid: params[:user_uid])&.trips&.build(trip_params.except(:trip_token))
+        if params[:copy_trip_token]
+          # コピー元のtripとspotsを取得
+          original_trip = Trip.find_by(trip_token: params[:copy_trip_token])
+          return render json: { error: { messages: ["コピー元の旅行プランが見つかりませんでした。"] } },
+                        status: :not_found unless original_trip
 
-        # パラメーターにimage_pathが設定されていないときのみ、指定された都道府県のデフォルト画像を設定
-        unless params[:trip][:image_path]
-          prefecture = Prefecture.find_by(id: params[:trip][:prefecture_id])
-          if prefecture
-            @trip.image_path = prefecture.image_path
-          else
-            render json: { error: { messages: ["指定された都道府県が見つかりませんでした。"] } }, status: :not_found
-            return
+          original_spots = original_trip.spots
+
+          # コピー元のtripから新しいtripを作成
+          @trip = User.find_by(uid: params[:user_uid])&.trips&.build(original_trip.attributes.except("id",
+                                                                                                     "trip_token",
+                                                                                                     "created_at",
+                                                                                                     "updated_at"))
+
+          # 新しいtripのタイトルと公開設定を変更
+          @trip.title = "#{original_trip.title}のコピー"
+          @trip.is_public = false
+
+          # 16桁のランダムで一意な英数字のtrip_tokenを生成
+          loop do
+            @trip.trip_token = SecureRandom.alphanumeric(16)
+            break unless Trip.exists?(trip_token: @trip.trip_token)
           end
-        end
 
-        # 16桁のランダムで一意な英数字のtrip_tokenを生成
-        loop do
-          @trip.trip_token = SecureRandom.alphanumeric(16)
-          break unless Trip.exists?(trip_token: @trip.trip_token)
-        end
+          if @trip.save
+            # コピー元の各spotから新しいspotを作成し、新しいtripに紐付ける
+            original_spots.each do |original_spot|
+              new_spot = @trip.spots.build(original_spot.attributes.except("id", "trip_id", "created_at", "updated_at"))
+              new_spot.save
+            end
 
-        if @trip.save
-          render json: @trip
+            render json: @trip
+          else
+            render json: { error: { messages: ["旅行プランを登録できませんでした。"] } },
+                   status: :unprocessable_entity
+          end
         else
-          render json: { error: { messages: ["旅行プランを登録できませんでした。"] } }, status: :unprocessable_entity
+          @trip = User.find_by(uid: params[:user_uid])&.trips&.build(trip_params.except(:trip_token))
+
+          # パラメーターにimage_pathが設定されていないときのみ、指定された都道府県のデフォルト画像を設定
+          unless params[:trip][:image_path]
+            prefecture = Prefecture.find_by(id: params[:trip][:prefecture_id])
+            if prefecture
+              @trip.image_path = prefecture.image_path
+            else
+              render json: { error: { messages: ["指定された都道府県が見つかりませんでした。"] } }, status: :not_found
+              return
+            end
+          end
+
+          # 16桁のランダムで一意な英数字のtrip_tokenを生成
+          loop do
+            @trip.trip_token = SecureRandom.alphanumeric(16)
+            break unless Trip.exists?(trip_token: @trip.trip_token)
+          end
+
+          if @trip.save
+            render json: @trip
+          else
+            render json: { error: { messages: ["旅行プランを登録できませんでした。"] } }, status: :unprocessable_entity
+          end
         end
       end
 

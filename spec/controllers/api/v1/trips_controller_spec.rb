@@ -87,6 +87,9 @@ RSpec.describe Api::V1::TripsController do
     let(:invalid_title_params) {
       { user_uid: user.uid, trip: attributes_for(:trip).merge(prefecture_id: prefecture.id, title: "") }
     }
+    let!(:trip) { create(:trip, user: user) }
+    let(:copy_params) { valid_params.merge(copy_trip_token: trip.trip_token) }
+    let(:invalid_copy_params) { valid_params.merge(copy_trip_token: "nonexistent_token") }
 
     context "with valid parameters" do
       it "creates a new trip" do
@@ -98,6 +101,32 @@ RSpec.describe Api::V1::TripsController do
       it "returns http success" do
         post :create, params: valid_params
         expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "with valid copy parameters" do
+      it "creates a new trip from source trip" do
+        expect {
+          post :create, params: copy_params
+        }.to change(Trip, :count).by(1)
+      end
+
+      it "returns http success" do
+        post :create, params: copy_params
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "with invalid copy parameters" do
+      it "does not create a new trip" do
+        expect {
+          post :create, params: invalid_copy_params
+        }.not_to change(Trip, :count)
+      end
+
+      it "returns http not_found" do
+        post :create, params: invalid_copy_params
+        expect(response).to have_http_status(:not_found)
       end
     end
 
