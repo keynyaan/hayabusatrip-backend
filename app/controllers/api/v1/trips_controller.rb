@@ -88,6 +88,7 @@ module Api
           end
 
           if @trip.save
+            set_preset_spots
             render json: @trip
           else
             render json: { error: { messages: ["旅行プランを登録できませんでした。"] } }, status: :unprocessable_entity
@@ -136,6 +137,56 @@ module Api
       # 旅行プラン用のパラメーター
       def trip_params
         params.require(:trip).permit(:prefecture_id, :title, :start_date, :end_date, :memo, :image_path, :is_public)
+      end
+
+      # プリセット用のスポットを登録
+      def set_preset_spots
+        start_date = @trip.start_date
+        end_date = @trip.end_date
+        diff_days = (end_date - start_date).to_i
+
+        case diff_days
+        when 0
+          # 日帰り旅行の場合
+          create_spots(start_date, ["移動", "昼食", "観光", "帰宅"])
+        when 1
+          # 1泊の旅行の場合
+          create_spots(start_date, ["移動", "昼食", "観光", "チェックイン"])
+          create_spots(end_date, ["チェックアウト", "昼食", "観光", "帰宅"])
+        else
+          # 2泊以上の旅行の場合
+          create_spots(start_date, ["移動", "昼食", "観光", "チェックイン"])
+          (start_date + 1..end_date - 1).each do |date|
+            create_spots(date, ["チェックアウト", "昼食", "観光", "チェックイン"])
+          end
+          create_spots(end_date, ["チェックアウト", "昼食", "観光", "帰宅"])
+        end
+      end
+
+      # スポットを作成
+      def create_spots(date, activities)
+        spot_templates = {
+          "移動" => { spot_icon: "car", start_time: "09:00", end_time: "12:00", cost: 15000,
+                    memo: "レンタカーを事前に予約する" },
+          "昼食" => { spot_icon: "meal", start_time: "12:00", end_time: "13:00", cost: 1000, memo: "" },
+          "観光" => { spot_icon: "sightseeing", start_time: "13:00", end_time: "17:00", cost: 2000, memo: "" },
+          "チェックイン" => { spot_icon: "stay", start_time: "17:00", end_time: "18:00", cost: 10000, memo: "" },
+          "チェックアウト" => { spot_icon: "stay", start_time: "09:00", end_time: "10:00", cost: 0, memo: "" },
+          "帰宅" => { spot_icon: "car", start_time: "17:00", end_time: "20:00", cost: 0, memo: "" }
+        }
+
+        activities.each do |activity|
+          template = spot_templates[activity]
+          @trip.spots.create(
+            spot_icon: template[:spot_icon],
+            title: activity,
+            date: date,
+            start_time: Time.zone.parse(template[:start_time]),
+            end_time: Time.zone.parse(template[:end_time]),
+            cost: template[:cost],
+            memo: template[:memo]
+          )
+        end
       end
     end
   end

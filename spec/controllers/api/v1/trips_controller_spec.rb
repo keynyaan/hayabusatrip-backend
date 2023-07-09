@@ -90,6 +90,8 @@ RSpec.describe Api::V1::TripsController do
     let!(:trip) { create(:trip, user: user) }
     let(:copy_params) { valid_params.merge(copy_trip_token: trip.trip_token) }
     let(:invalid_copy_params) { valid_params.merge(copy_trip_token: "nonexistent_token") }
+    let(:start_date) { Time.zone.today }
+    let(:end_date) { start_date + diff_days }
 
     context "with valid parameters" do
       it "creates a new trip" do
@@ -153,6 +155,39 @@ RSpec.describe Api::V1::TripsController do
       it "returns http unprocessable_entity with empty title" do
         post :create, params: invalid_title_params
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context 'when a day trip' do
+      let(:diff_days) { 0 }
+
+      it 'creates appropriate spots when a day trip' do
+        controller.instance_variable_set(:@trip, create(:trip, start_date: start_date, end_date: end_date))
+        controller.send(:set_preset_spots)
+
+        expect(Trip.last.spots.count).to eq 4
+      end
+    end
+
+    context 'when a one-night trip' do
+      let(:diff_days) { 1 }
+
+      it 'creates appropriate spots when a one-night trip' do
+        controller.instance_variable_set(:@trip, create(:trip, start_date: start_date, end_date: end_date))
+        controller.send(:set_preset_spots)
+
+        expect(Trip.last.spots.count).to eq 8
+      end
+    end
+
+    context 'when a multi-night trip' do
+      let(:diff_days) { 3 }
+
+      it 'creates appropriate spots when a multi-night trip' do
+        controller.instance_variable_set(:@trip, create(:trip, start_date: start_date, end_date: end_date))
+        controller.send(:set_preset_spots)
+
+        expect(Trip.last.spots.count).to eq (diff_days + 1) * 4
       end
     end
   end
