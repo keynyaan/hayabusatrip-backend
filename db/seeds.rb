@@ -5,7 +5,7 @@ prefecture_names = %w[
   shizuoka aichi mie shiga kyoto osaka hyogo nara
   wakayama tottori shimane okayama hiroshima yamaguchi
   tokushima kagawa ehime kochi fukuoka saga nagasaki
-  kumamoto oita miyazaki kagoshima okinawa
+  kumamoto oita miyazaki kagoshima okinawa kaigai
 ]
 
 prefecture_names.each do |name|
