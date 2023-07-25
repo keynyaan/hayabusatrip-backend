@@ -20,7 +20,7 @@ module Api
         if @user.save
           render json: @user
         else
-          render json: { error: { messages: ["新規ユーザーを登録できませんでした。"] } }, status: :unprocessable_entity
+          render json: { error: { messages: ["ユーザーを登録できませんでした。"] } }, status: :unprocessable_entity
         end
       end
 
@@ -45,7 +45,7 @@ module Api
           user.destroy
           head :no_content
         else
-          render json: { error: { messages: ["#{params[:uid]}のユーザーが存在しません。"] } }, status: :not_found
+          render json: { error: { messages: ["指定されたユーザーが存在しませんでした。"] } }, status: :not_found
         end
       end
 

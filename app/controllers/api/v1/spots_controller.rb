@@ -74,7 +74,7 @@ module Api
             @spots.destroy_all
             head :no_content
           else
-            render json: { error: { messages: ["指定した旅行スポットが存在しません。"] } }, status: :not_found
+            render json: { error: { messages: ["指定された旅行スポットが存在しませんでした。"] } }, status: :not_found
           end
         end
       end
