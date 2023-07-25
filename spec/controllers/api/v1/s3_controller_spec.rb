@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::S3Controller do
   include ActionDispatch::TestProcess
+  include AuthenticationHelper
 
   describe "POST /api/v1/s3/upload" do
     let(:image_file) { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'image_file.png'), 'image/png') }

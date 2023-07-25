@@ -1,12 +1,4 @@
 class ApplicationController < ActionController::API
-  def test
-    test_json_obj = [
-      { id: 1, title: "First Text", text: "最初のテキスト" },
-      { id: 2, title: "Second Text", text: "2番目のテキスト" },
-    ]
-    render json: test_json_obj
-  end
-
   # Firebase Authenticator用のモジュールを読み込み
   include FirebaseAuthenticator
 
@@ -16,8 +8,6 @@ class ApplicationController < ActionController::API
 
   # idTokenの検証を実行
   before_action :authenticate
-  # テスト用APIはidTokenの検証をスキップする
-  skip_before_action :authenticate, only: [:test]
 
   private
 
