@@ -128,7 +128,7 @@ module Api
           @trip.destroy
           head :no_content
         else
-          render json: { error: { messages: ["#{params[:trip_token]}の旅行プランが存在しません。"] } }, status: :not_found
+          render json: { error: { messages: ["指定された旅行プランが存在しませんでした。"] } }, status: :not_found
         end
       end
 
