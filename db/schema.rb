@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_21_132337) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_27_060812) do
   create_table "prefectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "image_path", null: false
@@ -53,10 +53,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_132337) do
     t.string "uid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name", default: "新規ユーザー", null: false
+    t.string "name", limit: 20, default: "新規ユーザー", null: false
     t.string "icon_path", default: "/images/default-user-icon.png", null: false
-    t.integer "request_count", default: 0, null: false
-    t.date "last_reset_date"
     t.datetime "last_login_time"
   end
 
