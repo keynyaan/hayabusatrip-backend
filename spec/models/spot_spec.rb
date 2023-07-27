@@ -123,6 +123,38 @@ RSpec.describe Spot do
     end
   end
 
+  context "with cost less than 0" do
+    before { spot.cost = -1 }
+
+    it "is invalid" do
+      expect(spot).to be_invalid
+    end
+  end
+
+  context "with cost equal to 0" do
+    before { spot.cost = 0 }
+
+    it "is valid" do
+      expect(spot).to be_valid
+    end
+  end
+
+  context "with cost more than 99999999" do
+    before { spot.cost = 100000000 }
+
+    it "is invalid" do
+      expect(spot).to be_invalid
+    end
+  end
+
+  context "with cost equal to 99999999" do
+    before { spot.cost = 99999999 }
+
+    it "is valid" do
+      expect(spot).to be_valid
+    end
+  end
+
   context "with memo length equal to maximum limit" do
     before { spot.memo = "a" * 50 }
 
