@@ -57,6 +57,38 @@ RSpec.describe Trip do
     end
   end
 
+  context "with start_date less than lower limit" do
+    before { trip.start_date = Date.new(1999, 12, 31) }
+
+    it "is invalid" do
+      expect(trip).to be_invalid
+    end
+  end
+
+  context "with start_date greater than upper limit" do
+    before { trip.start_date = Date.new(10000, 1, 1) }
+
+    it "is invalid" do
+      expect(trip).to be_invalid
+    end
+  end
+
+  context "with end_date less than lower limit" do
+    before { trip.end_date = Date.new(1999, 12, 31) }
+
+    it "is invalid" do
+      expect(trip).to be_invalid
+    end
+  end
+
+  context "with end_date greater than upper limit" do
+    before { trip.end_date = Date.new(10000, 1, 1) }
+
+    it "is invalid" do
+      expect(trip).to be_invalid
+    end
+  end
+
   context "with start_date equal to end_date" do
     before do
       trip.start_date = Time.zone.today
@@ -82,7 +114,7 @@ RSpec.describe Trip do
   context "with end_date within 10 days of start_date" do
     before do
       trip.start_date = Time.zone.today
-      trip.end_date = Time.zone.today + 10.days
+      trip.end_date = Time.zone.today + 9.days
     end
 
     it "is valid" do
@@ -93,7 +125,7 @@ RSpec.describe Trip do
   context "with end_date more than 10 days after start_date" do
     before do
       trip.start_date = Time.zone.today
-      trip.end_date = Time.zone.today + 11.days
+      trip.end_date = Time.zone.today + 10.days
     end
 
     it "is invalid" do
