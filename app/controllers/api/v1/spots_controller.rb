@@ -92,7 +92,7 @@ module Api
 
       # 旅行スポット用のパラメーター
       def spot_params
-        params.require(:spot).permit(:spot_icon, :title, :date, :start_time, :end_time, :cost, :memo)
+        params.require(:spot).permit(:category, :name, :date, :start_time, :end_time, :cost, :memo)
       end
     end
   end

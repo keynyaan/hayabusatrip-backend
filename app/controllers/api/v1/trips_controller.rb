@@ -166,20 +166,20 @@ module Api
       # スポットを作成
       def create_spots(date, activities)
         spot_templates = {
-          "移動" => { spot_icon: "car", start_time: "09:00", end_time: "12:00", cost: 15000,
+          "移動" => { category: "car", start_time: "09:00", end_time: "12:00", cost: 15000,
                     memo: "レンタカーを事前に予約する" },
-          "昼食" => { spot_icon: "meal", start_time: "12:00", end_time: "13:00", cost: 1000, memo: "" },
-          "観光" => { spot_icon: "sightseeing", start_time: "13:00", end_time: "17:00", cost: 2000, memo: "" },
-          "チェックイン" => { spot_icon: "stay", start_time: "17:00", end_time: "18:00", cost: 10000, memo: "" },
-          "チェックアウト" => { spot_icon: "stay", start_time: "09:00", end_time: "10:00", cost: 0, memo: "" },
-          "帰宅" => { spot_icon: "car", start_time: "17:00", end_time: "20:00", cost: 0, memo: "" }
+          "昼食" => { category: "meal", start_time: "12:00", end_time: "13:00", cost: 1000, memo: "" },
+          "観光" => { category: "sightseeing", start_time: "13:00", end_time: "17:00", cost: 2000, memo: "" },
+          "チェックイン" => { category: "stay", start_time: "17:00", end_time: "18:00", cost: 10000, memo: "" },
+          "チェックアウト" => { category: "stay", start_time: "09:00", end_time: "10:00", cost: 0, memo: "" },
+          "帰宅" => { category: "car", start_time: "17:00", end_time: "20:00", cost: 0, memo: "" }
         }
 
         activities.each do |activity|
           template = spot_templates[activity]
           @trip.spots.create(
-            spot_icon: template[:spot_icon],
-            title: activity,
+            category: template[:category],
+            name: activity,
             date: date,
             start_time: Time.zone.parse(template[:start_time]),
             end_time: Time.zone.parse(template[:end_time]),
