@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_060812) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_27_084758) do
   create_table "prefectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "image_path", null: false
@@ -20,8 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_060812) do
 
   create_table "spots", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "trip_id", null: false
-    t.string "spot_icon", default: "location-dot", null: false
-    t.string "title", limit: 30, null: false
+    t.string "category", default: "sightseeing", null: false
+    t.string "name", limit: 30, null: false
     t.date "date", null: false
     t.time "start_time", null: false
     t.time "end_time", null: false

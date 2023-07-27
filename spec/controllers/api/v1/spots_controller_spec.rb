@@ -80,7 +80,7 @@ RSpec.describe Api::V1::SpotsController do
 
   describe "POST /api/v1/users/:user_uid/trips/:trip_trip_token/spots" do
     let(:valid_params) { { spot: attributes_for(:spot) } }
-    let(:invalid_params) { { spot: attributes_for(:spot).merge(title: "") } }
+    let(:invalid_params) { { spot: attributes_for(:spot).merge(name: "") } }
 
     context "with valid parameters" do
       it "creates a new spot" do
@@ -111,14 +111,14 @@ RSpec.describe Api::V1::SpotsController do
 
   describe "PUT /api/v1/users/:user_uid/trips/:trip_trip_token/spots/:id" do
     let!(:spot) { create(:spot, trip: trip) }
-    let(:new_attributes) { { spot: { title: "Updated Spot" } } }
-    let(:invalid_attributes) { { spot: { title: "" } } }
+    let(:new_attributes) { { spot: { name: "Updated Spot" } } }
+    let(:invalid_attributes) { { spot: { name: "" } } }
 
     context "with valid parameters" do
       it "updates the requested spot" do
         put :update, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot.id }.merge(new_attributes)
         spot.reload
-        expect(spot.title).to eq("Updated Spot")
+        expect(spot.name).to eq("Updated Spot")
       end
 
       it "returns http success" do
@@ -132,7 +132,7 @@ RSpec.describe Api::V1::SpotsController do
         put :update,
             params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot.id }.merge(invalid_attributes)
         spot.reload
-        expect(spot.title).not_to be_empty
+        expect(spot.name).not_to be_empty
       end
 
       it "returns http unprocessable_entity" do

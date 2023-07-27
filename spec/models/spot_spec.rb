@@ -9,48 +9,48 @@ RSpec.describe Spot do
     end
   end
 
-  context "without spot_icon" do
-    before { spot.spot_icon = nil }
+  context "without category" do
+    before { spot.category = nil }
 
     it "is invalid" do
       expect(spot).to be_invalid
     end
   end
 
-  context "with empty spot_icon" do
-    before { spot.spot_icon = "" }
+  context "with empty category" do
+    before { spot.category = "" }
 
     it "is invalid" do
       expect(spot).to be_invalid
     end
   end
 
-  context "without title" do
-    before { spot.title = nil }
+  context "without name" do
+    before { spot.name = nil }
 
     it "is invalid" do
       expect(spot).to be_invalid
     end
   end
 
-  context "with empty title" do
-    before { spot.title = "" }
+  context "with empty name" do
+    before { spot.name = "" }
 
     it "is invalid" do
       expect(spot).to be_invalid
     end
   end
 
-  context "with title length equal to maximum limit" do
-    before { spot.title = "a" * 30 }
+  context "with name length equal to maximum limit" do
+    before { spot.name = "a" * 30 }
 
     it "is valid" do
       expect(spot).to be_valid
     end
   end
 
-  context "with title length more than maximum limit" do
-    before { spot.title = "a" * 31 }
+  context "with name length more than maximum limit" do
+    before { spot.name = "a" * 31 }
 
     it "is invalid" do
       expect(spot).to be_invalid

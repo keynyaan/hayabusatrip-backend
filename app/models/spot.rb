@@ -1,8 +1,8 @@
 class Spot < ApplicationRecord
   belongs_to :trip
 
-  validates :spot_icon, :title, :date, :start_time, :end_time, :cost, presence: true
-  validates :title, length: { maximum: 30 }
+  validates :category, :name, :date, :start_time, :end_time, :cost, presence: true
+  validates :name, length: { maximum: 30 }
   validates :cost, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 99999999 }
   validates :memo, length: { maximum: 50 }
   validate :end_time_after_start_time
