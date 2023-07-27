@@ -3,9 +3,6 @@ module Api
     class S3Controller < ApplicationController
       FILE_SIZE_LIMIT_BYTES = 5 * 1024 * 1024 # 5MB
 
-      # idTokenの検証をスキップする
-      # skip_before_action :authenticate, only: [:upload]
-
       # S3にファイルアップロード
       def upload
         # ファイルの種類とサイズのバリデーション
