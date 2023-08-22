@@ -21,8 +21,8 @@ SimpleCov.start 'rails' do
 end
 
 if ENV['CI'] == 'true'
-  require 'codecov'
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  require 'simplecov-cobertura'
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 else
   require 'simplecov-console'
   SimpleCov.formatters.clear
