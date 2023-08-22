@@ -2,7 +2,8 @@
 /config/master.key
 
 # coverage
-/coverage
+/coverage/*
+!/coverage/.keep
 
 # log
 /log/*
