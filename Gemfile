@@ -48,7 +48,7 @@ group :development, :test do
   gem "shoulda-matchers"
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
-  gem 'codecov', require: false
+  gem 'simplecov-cobertura'
 end
 
 group :development do
