@@ -15,20 +15,19 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   require 'simplecov'
-  require 'simplecov-console'
-
   SimpleCov.start 'rails' do
     add_filter 'app/channels/'
     add_filter 'app/jobs/'
     add_filter 'app/mailers/'
+  end
 
-    if ENV['CI'] == 'true'
-      require 'codecov'
-      SimpleCov.formatter = SimpleCov::Formatter::Codecov
-    else
-      SimpleCov.formatters.clear
-      SimpleCov.formatter = SimpleCov::Formatter::Console
-    end
+  if ENV['CI'] == 'true'
+    require 'codecov'
+    SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  else
+    require 'simplecov-console'
+    SimpleCov.formatters.clear
+    SimpleCov.formatter = SimpleCov::Formatter::Console
   end
 
   # rspec-expectations config goes here. You can use an alternate
