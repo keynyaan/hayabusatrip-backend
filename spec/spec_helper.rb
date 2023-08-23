@@ -24,13 +24,13 @@ SimpleCov.start 'rails' do
   add_filter 'app/mailers/'
 end
 
-if ENV['CI'] == 'true'
+# if ENV['CI'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::Codecov
-else
-  require 'simplecov-console'
-  SimpleCov.formatters.clear
-  SimpleCov.formatter = SimpleCov::Formatter::Console
-end
+# else
+#   require 'simplecov-console'
+#   SimpleCov.formatters.clear
+#   SimpleCov.formatter = SimpleCov::Formatter::Console
+# end
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
