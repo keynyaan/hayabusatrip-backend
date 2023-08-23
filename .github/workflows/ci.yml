@@ -52,22 +52,10 @@ jobs:
       - name: Run Rubocop
         run: docker-compose exec -T app bundle exec rubocop
 
-      - name: Run RSpec
-        run: docker-compose exec -T app bin/rspec
-        env:
-          CI: 'true'
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      # - name: Create and set permissions for coverage directory
-      #   run: |
-      #     sudo mkdir -p ./coverage
-      #     sudo chmod 777 ./coverage
-
-      # - name: Copy coverage files from Docker container
-      #   run: docker cp $(docker-compose ps -q app):/backend/coverage ./coverage
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Run RSpec and Upload coverage reports to Codecov
+        run: |
+          docker-compose exec -T app bin/rspec
+          bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
