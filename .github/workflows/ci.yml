@@ -67,10 +67,9 @@ jobs:
       #   run: docker cp $(docker-compose ps -q app):/backend/coverage ./coverage
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/*
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Stop and remove Docker containers
         run: docker-compose down
