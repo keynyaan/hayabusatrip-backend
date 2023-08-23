@@ -46,10 +46,10 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "shoulda-matchers"
-  gem 'codecov',   require: false
+  gem 'codecov', require: false
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
-  gem 'simplecov-cobertura'
+  gem 'simplecov-cobertura', require: false
 end
 
 group :development do

@@ -16,7 +16,14 @@
 # require 'codecov'
 require 'simplecov'
 
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+  add_filter 'app/channels/'
+  add_filter 'app/jobs/'
+  add_filter 'app/mailers/'
+end
+
+require 'simplecov-console'
+SimpleCov.formatter = SimpleCov::Formatter::Console
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
