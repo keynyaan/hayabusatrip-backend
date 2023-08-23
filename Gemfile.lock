@@ -87,8 +87,6 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
-    codecov (0.6.0)
-      simplecov (>= 0.15, < 0.22)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
     date (3.3.3)
@@ -232,9 +230,6 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
-    simplecov-cobertura (2.1.0)
-      rexml
-      simplecov (~> 0.19)
     simplecov-console (0.9.1)
       ansi
       simplecov
@@ -260,7 +255,6 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3
   bootsnap
-  codecov
   debug
   factory_bot_rails
   jwt
@@ -275,7 +269,6 @@ DEPENDENCIES
   rubocop-rspec
   shoulda-matchers
   simplecov
-  simplecov-cobertura
   simplecov-console
   tzinfo-data
 
