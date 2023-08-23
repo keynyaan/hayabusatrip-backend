@@ -87,6 +87,8 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
+    codecov (0.6.0)
+      simplecov (>= 0.15, < 0.22)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
     date (3.3.3)
@@ -258,6 +260,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3
   bootsnap
+  codecov
   debug
   factory_bot_rails
   jwt
