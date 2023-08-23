@@ -15,6 +15,7 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'simplecov'
 require 'codecov'
+require 'simplecov-cobertura'
 
 SimpleCov.start 'rails' do
   add_filter 'app/channels/'
@@ -22,7 +23,12 @@ SimpleCov.start 'rails' do
   add_filter 'app/mailers/'
 end
 
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
+if ENV['CI'] == 'true'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+else
+  SimpleCov.formatters.clear
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+end
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
