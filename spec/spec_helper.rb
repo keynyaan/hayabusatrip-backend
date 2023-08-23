@@ -15,10 +15,8 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'simplecov'
 require 'codecov'
-require 'simplecov-cobertura'
 
 SimpleCov.start 'rails' do
-  formatter SimpleCov::Formatter::CoberturaFormatter
   add_filter 'app/channels/'
   add_filter 'app/jobs/'
   add_filter 'app/mailers/'
