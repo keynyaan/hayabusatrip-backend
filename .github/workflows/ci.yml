@@ -58,13 +58,13 @@ jobs:
           CI: 'true'
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Create and set permissions for coverage directory
-        run: |
-          sudo mkdir -p ./coverage
-          sudo chmod 777 ./coverage
+      # - name: Create and set permissions for coverage directory
+      #   run: |
+      #     sudo mkdir -p ./coverage
+      #     sudo chmod 777 ./coverage
 
-      - name: Copy coverage files from Docker container
-        run: docker cp $(docker-compose ps -q app):/backend/coverage ./coverage
+      # - name: Copy coverage files from Docker container
+      #   run: docker cp $(docker-compose ps -q app):/backend/coverage ./coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v2
