@@ -59,7 +59,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Copy coverage files from Docker container
-        run: docker cp app:./coverage ./coverage
+        run: docker cp $(docker-compose ps -q app):./coverage ./coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v2
