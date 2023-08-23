@@ -58,8 +58,8 @@ jobs:
           CI: 'true'
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Display contents of coverage directory
-        run: ls -la ./coverage
+      - name: Copy coverage files from Docker container
+        run: docker cp app:./coverage ./coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v2
