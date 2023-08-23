@@ -58,6 +58,11 @@ jobs:
           CI: 'true'
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+      - name: Create and set permissions for coverage directory
+        run: |
+          mkdir -p ./coverage
+          chmod 777 ./coverage
+
       - name: Copy coverage files from Docker container
         run: docker cp $(docker-compose ps -q app):/backend/coverage ./coverage
 
