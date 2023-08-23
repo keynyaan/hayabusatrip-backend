@@ -17,6 +17,7 @@ require 'simplecov'
 require 'codecov'
 
 SimpleCov.start 'rails' do
+  formatter SimpleCov::Formatter::CoberturaFormatter
   add_filter 'app/channels/'
   add_filter 'app/jobs/'
   add_filter 'app/mailers/'
