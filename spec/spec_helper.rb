@@ -14,6 +14,8 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'simplecov'
+require 'codecov'
+
 SimpleCov.start 'rails' do
   add_filter 'app/channels/'
   add_filter 'app/jobs/'
@@ -21,8 +23,7 @@ SimpleCov.start 'rails' do
 end
 
 if ENV['CI'] == 'true'
-  require 'simplecov-cobertura'
-  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
 else
   require 'simplecov-console'
   SimpleCov.formatters.clear
