@@ -15,10 +15,13 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 # require 'codecov'
 require 'simplecov'
-SimpleCov.start 'rails'
+require 'simplecov-cobertura'
 
-require 'codecov'
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
+SimpleCov.start do
+  coverage_dir 'tmp/coverage'
+end
+
+SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
