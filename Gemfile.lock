@@ -134,7 +134,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.2-x86_64-linux)
@@ -142,7 +142,7 @@ GEM
     parallel (1.22.1)
     parser (3.2.2.0)
       ast (~> 2.4.1)
-    puma (5.6.5)
+    puma (5.6.7)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.4)
@@ -250,6 +250,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-22
+  x86_64-linux
   x86_64-linux-musl
 
 DEPENDENCIES
@@ -259,7 +260,7 @@ DEPENDENCIES
   factory_bot_rails
   jwt
   mysql2 (~> 0.5)
-  puma (~> 5.0)
+  puma (~> 5.6)
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.3)
   rspec-rails
