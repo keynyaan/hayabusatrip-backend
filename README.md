@@ -2,7 +2,7 @@
 
 # HayabusaTrip / 旅行プラン共有サービス
 
-![image](https://raw.githubusercontent.com/keynyaan/hayabusatrip-frontend/main/public/images/ogp.png)
+![service-image](https://raw.githubusercontent.com/keynyaan/hayabusatrip-frontend/main/public/images/ogp.png)
 [![CI/CD](https://github.com/keynyaan/hayabusatrip-backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/keynyaan/hayabusatrip-backend/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/keynyaan/hayabusatrip-backend/graph/badge.svg?token=ESP9PFN6BE)](https://codecov.io/gh/keynyaan/hayabusatrip-backend)
 [![Ruby](https://img.shields.io/badge/Ruby-v3.2.2-CC342D?logo=Ruby&logoColor=CC342D)](https://www.ruby-lang.org/ja/news/2023/03/30/ruby-3-2-2-released)
@@ -17,106 +17,27 @@
 
 ## サービス概要
 
-HayabusaTrip は、「旅の準備をもっとシンプルにしたい！」という想いから作られた、無料の旅行プラン共有サービスです。
+HayabusaTripは、「旅の準備をもっとシンプルにしたい！」という想いから作られた、無料の旅行プラン共有サービスです。
 
-わずか 3 ステップで旅行プランを共有できる直感的な UI で、ユーザーの面倒な旅行の準備をサポートします。
+わずか3ステップで旅行プランを共有できる直感的なUIで、ユーザーの面倒な旅行の準備をサポートします。
 
-### ▼ サービス URL
+### ▼ サービスURL
 
 https://www.hayabusatrip.com
 
-レスポンシブ対応済のため、PC でもスマホでも快適にご利用いただけます。
+レスポンシブ対応済のため、PCでもスマートフォンでも快適にご利用いただけます。
 
-### ▼ 紹介記事 ( Qiita )
+### ▼ 紹介記事(Qiita)
 
 <!-- あとで書く -->
 
 サービスのリリースまでに、勉強したことなどを解説しています。
 
-### ▼ 開発者 Twitter
+### ▼ 開発者Twitter
 
 https://twitter.com/keynyaan
 
 何かあれば、こちらまでお気軽にご連絡ください。
-
-## 主要対応一覧
-
-### ユーザー向け
-
-#### 機能
-
-- メールアドレスとパスワードを利用したユーザー登録 / ログイン機能
-- Google アカウントを利用したユーザー登録 / ログイン機能
-- ユーザー情報変更機能
-- パスワード再設定機能
-- 退会機能
-- 旅行プランの取得 / 作成 / 更新 / 削除機能
-- 旅行プランの検索機能
-- 旅行プランの公開 / 非公開機能
-- 旅行スポットの取得 / 作成 / 更新 / 削除機能
-- Twitter シェア機能
-- ページネーション機能
-- 画像の取得 / アップロード機能
-
-#### 画面
-
-- トースト表示
-- ローディング画面
-- モーダル画面 ( 各画面の詳細は[下記](#screen-transition-diagram)の画面遷移図参照 )
-- 404 / 500 エラーのカスタム画面
-- レスポンシブデザイン
-
-### 非ユーザー向け
-
-#### システム / インフラ
-
-- Next.js の Image / Link コンポーネント等の活用によるサービス全体の高速化
-- Docker による開発環境のコンテナ化
-- Route53 による独自ドメイン + SSL 化
-- GitHub Actions による CI / CD パイプラインの構築
-  - バックエンド
-    - CI: Rubocop, RSpec
-    - CD: AWS ECS
-  - フロントエンド
-    - CI: ESLint, Prettier, Jest, Codecov
-    - CD: Vercel
-
-#### テスト / セキュリティ
-
-- クロスブラウザテスト
-
-  - PC
-    - Windows10 / 11: Google Chrome, Firefox, Microsoft Edge
-    - Mac: Google Chrome, Firefox, Safari
-  - スマートフォン
-    - Android: Google Chrome
-    - iOS: Safari
-
-- Codecov によるコードカバレッジの分析と可視化
-- 脆弱性対応 ( Dependabot Alerts )
-
-## 使用技術一覧
-
-**バックエンド:** Ruby 3.2.2, Rails 7.0.7.2
-
-- コード解析 / フォーマッター: Rubocop
-- テストフレームワーク: RSpec
-
-**フロントエンド:** TypeScript 5.0.2, React 18.2.0, Next.js 13.2.4
-
-- コード解析: ESLint
-- フォーマッター: Prettier
-- テストフレームワーク: Jest, React Testing Library
-- CSS フレームワーク: Tailwind CSS
-- 主要パッケージ等: Axios, Font Awesome, React Paginate, React Responsive Modal, React Toastify
-
-**インフラ:** AWS ( Route53 / Certificate Manager / ALB / VPC / ECR / ECS Fargate / RDS MySQL / S3 ), Nginx, Vercel
-
-**CI / CD:** GitHub Actions
-
-**環境構築:** Docker, Docker Compose
-
-**認証:** Firebase Authentication
 
 ## メイン機能の使い方
 
@@ -133,11 +54,90 @@ https://twitter.com/keynyaan
   </tr>
 </table>
 
+## 使用技術一覧
+
+**バックエンド:** Ruby 3.2.2 / Rails 7.0.7.2
+
+- コード解析 / フォーマッター: Rubocop
+- テストフレームワーク: RSpec
+
+**フロントエンド:** TypeScript 5.0.2 / React 18.2.0 / Next.js 13.2.4
+
+- コード解析: ESLint
+- フォーマッター: Prettier
+- テストフレームワーク: Jest / React Testing Library
+- CSSフレームワーク: Tailwind CSS
+- 主要パッケージ: Axios / Font Awesome / React Paginate / React Responsive Modal / React Toastify
+
+**インフラ:** AWS(Route53 / Certificate Manager / ALB / VPC / ECR / ECS Fargate / RDS MySQL / S3) / Nginx / Vercel
+
+**CI / CD:** GitHub Actions
+
+**環境構築:** Docker / Docker Compose
+
+**認証:** Firebase Authentication
+
+## 主要対応一覧
+
+### ユーザー向け
+
+#### 機能
+
+- メールアドレスとパスワードを利用したユーザー登録 / ログイン機能
+- Googleアカウントを利用したユーザー登録 / ログイン機能
+- ユーザー情報変更機能
+- パスワード再設定機能
+- 退会機能
+- 旅行プランの取得 / 作成 / 更新 / 削除機能
+- 旅行プランの検索機能
+- 旅行プランの公開 / 非公開機能
+- 旅行スポットの取得 / 作成 / 更新 / 削除機能
+- Twitterシェア機能
+- ページネーション機能
+- 画像の取得 / アップロード機能
+
+#### 画面
+
+- トースト表示
+- ローディング画面
+- モーダル画面(各画面の詳細は[下記](#screen-transition-diagram)の画面遷移図参照)
+- 404 / 500エラーのカスタム画面
+- レスポンシブデザイン
+
+### 非ユーザー向け
+
+#### システム / インフラ
+
+- Next.jsのImage / Linkコンポーネントなどの活用によるサービス全体の高速化
+- Dockerによる開発環境のコンテナ化
+- Route53による独自ドメイン + SSL化
+- GitHub ActionsによるCI / CDパイプラインの構築
+  - バックエンド
+    - CI: Rubocop / RSpec
+    - CD: AWS ECS
+  - フロントエンド
+    - CI: ESLint / Prettier / Jest / Codecov
+    - CD: Vercel
+
+#### テスト / セキュリティ
+
+- クロスブラウザテスト
+
+  - PC
+    - Windows10 / 11: Google Chrome / Firefox / Microsoft Edge
+    - Mac: Google Chrome / Firefox / Safari
+  - スマートフォン
+    - Android: Google Chrome
+    - iOS: Safari
+
+- Codecovによるコードカバレッジの分析と可視化
+- 脆弱性対応(Dependabot Alerts / Code Scanning Alerts / GitGuardian)
+
 ## インフラ構成図
 
 ![infrastructure-diagram](https://raw.githubusercontent.com/keynyaan/hayabusatrip-frontend/main/public/images/diagrams/infrastructure-diagram.png)
 
-## ER 図
+## ER図
 
 ![er-diagram](https://raw.githubusercontent.com/keynyaan/hayabusatrip-frontend/main/public/images/diagrams/er-diagram.png)
 
