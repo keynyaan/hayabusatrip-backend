@@ -3,8 +3,8 @@ version: '3.8'
 services:
   db:
     container_name: hayabusatrip_db
-    # 2023年3月時点の最新版MySQL
-    image: mysql:8.0.32
+    # 2025年9月時点の最新版MySQL
+    image: mysql:8.4.0
     env_file:
       - ./.env
     ports:

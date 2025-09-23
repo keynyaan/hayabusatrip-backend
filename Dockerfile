@@ -1,10 +1,10 @@
 ## ビルドステージ
-# 2023年3月時点の最新安定版Rubyの軽量版「alpine」
-FROM ruby:3.2.2-alpine AS builder
+# 2025年9月時点の最新安定版Rubyの軽量版「alpine」
+FROM ruby:3.3.0-alpine AS builder
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Tokyo
-# 2023年3月時点の最新版のbundler
-ENV BUNDLER_VERSION=2.4.10
+# 2025年9月時点の最新版のbundler
+ENV BUNDLER_VERSION=2.5.9
 RUN apk update && \
     apk upgrade && \
     apk add --virtual build-packs --no-cache \
@@ -22,8 +22,8 @@ RUN bundle install --jobs=4
 RUN apk del build-packs
 
 ## 実行ステージ
-# 2023年3月時点の最新安定版Rubyの軽量版「alpine」
-FROM ruby:3.2.2-alpine
+# 2025年9月時点の最新安定版Rubyの軽量版「alpine」
+FROM ruby:3.3.0-alpine
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Tokyo
 ENV RAILS_ENV=production
