@@ -53,7 +53,7 @@ module Api
 
       # ユーザー用のパラメーター
       def user_params
-        params.require(:user).permit(:uid, :name, :icon_path, :last_login_time)
+        params.expect(user: [:uid, :name, :icon_path, :last_login_time])
       end
 
       # payloadのuidを返すメソッド

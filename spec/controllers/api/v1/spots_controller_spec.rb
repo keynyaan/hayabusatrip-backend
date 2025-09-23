@@ -11,8 +11,8 @@ RSpec.describe Api::V1::SpotsController do
   let!(:trip) { create(:trip, user: user) }
 
   describe "GET /api/v1/users/:user_uid/trips/:trip_trip_token/spots" do
-    let!(:spot1) { create(:spot, trip: trip) }
-    let!(:spot2) { create(:spot, trip: trip) }
+    let!(:first_spot) { create(:spot, trip: trip) }
+    let!(:second_spot) { create(:spot, trip: trip) }
 
     it "returns http success" do
       get :index, params: { user_uid: user.uid, trip_trip_token: trip.trip_token }
@@ -21,14 +21,14 @@ RSpec.describe Api::V1::SpotsController do
 
     it "returns all spots of the trip" do
       get :index, params: { user_uid: user.uid, trip_trip_token: trip.trip_token }
-      expect(response.parsed_body.map { |s| s["id"] }).to contain_exactly(spot1.id, spot2.id)
+      expect(response.parsed_body.map { |s| s["id"] }).to contain_exactly(first_spot.id, second_spot.id)
     end
   end
 
   describe "GET /api/v1/trips/:trip_token/spots" do
     let!(:trip) { create(:trip, is_public: is_public) }
-    let!(:spot1) { create(:spot, trip: trip) }
-    let!(:spot2) { create(:spot, trip: trip) }
+    let!(:first_spot) { create(:spot, trip: trip) }
+    let!(:second_spot) { create(:spot, trip: trip) }
 
     context "when the trip is public" do
       let(:is_public) { true }
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::SpotsController do
 
       it "returns all spots of the public trip" do
         get :index, params: { trip_trip_token: trip.trip_token }
-        expect(response.parsed_body.map { |s| s["id"] }).to contain_exactly(spot1.id, spot2.id)
+        expect(response.parsed_body.map { |s| s["id"] }).to contain_exactly(first_spot.id, second_spot.id)
       end
     end
 
@@ -151,8 +151,8 @@ RSpec.describe Api::V1::SpotsController do
     end
 
     context "with base_date and date_offset parameters" do
-      let!(:spot1) { create(:spot, trip: trip, date: Time.zone.today) }
-      let!(:spot2) { create(:spot, trip: trip, date: Time.zone.tomorrow) }
+      let!(:today_spot) { create(:spot, trip: trip, date: Time.zone.today) }
+      let!(:tomorrow_spot) { create(:spot, trip: trip, date: Time.zone.tomorrow) }
       let(:base_date) { Time.zone.today.strftime('%Y-%m-%d') }
       let(:date_offset) { 1 }
       let(:params) do
@@ -166,10 +166,10 @@ RSpec.describe Api::V1::SpotsController do
 
       it "updates spots with dates after base_date" do
         put :update, params: params
-        spot1.reload
-        spot2.reload
-        expect(spot1.date).to eq(Time.zone.today)
-        expect(spot2.date).to eq(Time.zone.today + 2.days)
+        today_spot.reload
+        tomorrow_spot.reload
+        expect(today_spot.date).to eq(Time.zone.today)
+        expect(tomorrow_spot.date).to eq(Time.zone.today + 2.days)
       end
 
       it "returns http success" do
@@ -192,19 +192,19 @@ RSpec.describe Api::V1::SpotsController do
   end
 
   describe "DELETE /api/v1/users/:user_uid/trips/:trip_trip_token/spots/:id" do
-    let!(:spot1) { create(:spot, trip: trip, date: Time.zone.today) }
-    let!(:spot2) { create(:spot, trip: trip, date: Time.zone.today) }
-    let!(:spot3) { create(:spot, trip: trip, date: Time.zone.tomorrow) }
+    let!(:first_today_spot) { create(:spot, trip: trip, date: Time.zone.today) }
+    let!(:second_today_spot) { create(:spot, trip: trip, date: Time.zone.today) }
+    let!(:tomorrow_spot) { create(:spot, trip: trip, date: Time.zone.tomorrow) }
 
     context "when spot id exists" do
       it "destroys the requested spot" do
         expect {
-          delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot1.id }
+          delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: first_today_spot.id }
         }.to change(Spot, :count).by(-1)
       end
 
       it "returns no content" do
-        delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: spot1.id }
+        delete :destroy, params: { user_uid: user.uid, trip_trip_token: trip.trip_token, id: first_today_spot.id }
         expect(response).to have_http_status(:no_content)
       end
     end

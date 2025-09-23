@@ -136,7 +136,7 @@ module Api
 
       # 旅行プラン用のパラメーター
       def trip_params
-        params.require(:trip).permit(:prefecture_id, :title, :start_date, :end_date, :memo, :image_path, :is_public)
+        params.expect(trip: [:prefecture_id, :title, :start_date, :end_date, :memo, :image_path, :is_public])
       end
 
       # プリセット用のスポットを登録
@@ -156,7 +156,7 @@ module Api
         else
           # 2泊以上の旅行の場合
           create_spots(start_date, ["移動", "昼食", "観光", "チェックイン"])
-          (start_date + 1..end_date - 1).each do |date|
+          ((start_date + 1)..(end_date - 1)).each do |date|
             create_spots(date, ["チェックアウト", "昼食", "観光", "チェックイン"])
           end
           create_spots(end_date, ["チェックアウト", "昼食", "観光", "帰宅"])
