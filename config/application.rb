@@ -1,5 +1,13 @@
 require_relative "boot"
 
+# Monkey patch for Ruby 3.3 compatibility
+require 'logger'
+module ActiveSupport
+  module LoggerThreadSafeLevel
+    Logger = ::Logger
+  end
+end
+
 require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
@@ -10,6 +18,9 @@ module Backend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+
+    # Fix for Ruby 3.3 compatibility
+    config.active_support.logger_outputs_to = [:stdout]
 
     # Configuration for the application, engines, and railties goes here.
     #
