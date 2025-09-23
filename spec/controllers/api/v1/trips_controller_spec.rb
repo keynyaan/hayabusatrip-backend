@@ -10,8 +10,8 @@ RSpec.describe Api::V1::TripsController do
   let!(:user) { create(:user) }
 
   describe "GET /api/v1/users/:user_uid/trips" do
-    let!(:trip1) { create(:trip, user: user) }
-    let!(:trip2) { create(:trip, user: user) }
+    let!(:first_trip) { create(:trip, user: user) }
+    let!(:second_trip) { create(:trip, user: user) }
 
     it "returns http success" do
       get :index, params: { user_uid: user.uid }
@@ -20,7 +20,8 @@ RSpec.describe Api::V1::TripsController do
 
     it "returns all trips of the user" do
       get :index, params: { user_uid: user.uid }
-      expect(response.parsed_body.map { |t| t["trip_token"] }).to contain_exactly(trip1.trip_token, trip2.trip_token)
+      expected_tokens = [first_trip.trip_token, second_trip.trip_token]
+      expect(response.parsed_body.map { |t| t["trip_token"] }).to match_array(expected_tokens)
     end
   end
 
