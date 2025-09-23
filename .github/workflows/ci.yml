@@ -33,29 +33,29 @@ jobs:
 
       - name: Build and run Docker containers
         run: |
-          docker-compose build --no-cache
-          docker-compose up -d
+          docker compose build --no-cache
+          docker compose up -d
 
       - name: Wait for DB connection
         run: |
           for i in {1..30}; do
-            docker-compose exec -T db mysql -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "SELECT 1;" && break || sleep 5
+            docker compose exec -T db mysql -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "SELECT 1;" && break || sleep 5
           done
 
       - name: Create DB
-        run: docker-compose exec -T app rails db:create
+        run: docker compose exec -T app rails db:create
 
       - name: Run migrations
-        run: docker-compose exec -T app rails db:migrate
+        run: docker compose exec -T app rails db:migrate
 
       - name: Load seed data
-        run: docker-compose exec -T app rails db:seed
+        run: docker compose exec -T app rails db:seed
 
       - name: Run Rubocop
-        run: docker-compose exec -T app bundle exec rubocop
+        run: docker compose exec -T app bundle exec rubocop
 
       - name: Run RSpec
-        run: docker-compose exec -T app bin/rspec
+        run: docker compose exec -T app bin/rspec
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
@@ -64,7 +64,7 @@ jobs:
           files: ./coverage/.resultset.json
 
       - name: Stop and remove Docker containers
-        run: docker-compose down
+        run: docker compose down
 
   build_and_push_image_web:
     needs: test
