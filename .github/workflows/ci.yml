@@ -29,7 +29,7 @@ jobs:
           echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
           echo S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} >> .env
-          echo S3_URL=${{ secrets.S3_URL }} >> .env
+          echo CLOUDFRONT_DOMAIN=${{ secrets.CLOUDFRONT_DOMAIN }} >> .env
 
       - name: Build and run Docker containers
         run: |
@@ -153,7 +153,7 @@ jobs:
           sed -i "s#AWS_SECRET_ACCESS_KEY_PLACEHOLDER#${{ secrets.AWS_SECRET_ACCESS_KEY }}#" aws/task-definition.json
           sed -i "s#AWS_REGION_PLACEHOLDER#${{ secrets.AWS_REGION }}#" aws/task-definition.json
           sed -i "s#S3_BUCKET_NAME_PLACEHOLDER#${{ secrets.S3_BUCKET_NAME }}#" aws/task-definition.json
-          sed -i "s#S3_URL_PLACEHOLDER#${{ secrets.S3_URL }}#" aws/task-definition.json
+          sed -i "s#CLOUDFRONT_DOMAIN_PLACEHOLDER#${{ secrets.CLOUDFRONT_DOMAIN }}#" aws/task-definition.json
 
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1

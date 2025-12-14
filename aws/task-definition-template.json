@@ -55,8 +55,8 @@
           "value": "S3_BUCKET_NAME_PLACEHOLDER"
         },
         {
-          "name": "S3_URL",
-          "value": "S3_URL_PLACEHOLDER"
+          "name": "CLOUDFRONT_DOMAIN",
+          "value": "CLOUDFRONT_DOMAIN_PLACEHOLDER"
         }
       ],
       "mountPoints": [],
