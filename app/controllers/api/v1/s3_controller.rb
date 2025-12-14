@@ -19,7 +19,10 @@ module Api
 
         begin
           obj.upload_file(params[:file].tempfile, content_type: params[:file].content_type)
-          render json: { location: obj.public_url }
+
+          # CloudFront URL を返す
+          cloudfront_url = "#{ENV['CLOUDFRONT_DOMAIN']}/#{params[:filename]}"
+          render json: { location: cloudfront_url }
         rescue => e
           render json: { error: e.message }, status: :internal_server_error
         end
