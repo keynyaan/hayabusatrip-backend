@@ -1,9 +1,16 @@
 class Trip < ApplicationRecord
+  include CloudfrontUrlConvertible
+
   has_many :spots, dependent: :destroy
   belongs_to :user
   belongs_to :prefecture
 
   validates :title, :start_date, :end_date, :image_path, :trip_token, presence: true
+
+  # S3 URLをCloudFront URLに変換して返す
+  def image_path
+    convert_to_cloudfront_url(super)
+  end
   validates :title, length: { maximum: 30 }
   validates :memo, length: { maximum: 1000 }
   validates :is_public, inclusion: { in: [true, false] }

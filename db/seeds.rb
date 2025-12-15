@@ -10,6 +10,6 @@ prefecture_names = %w[
 
 prefecture_names.each do |name|
   Prefecture.find_or_create_by!(name: name) do |prefecture|
-    prefecture.image_path = "#{ENV['S3_URL']}prefectures/#{name}.jpg"
+    prefecture.image_path = "#{ENV['CLOUDFRONT_DOMAIN']}/prefectures/#{name}.jpg"
   end
 end
