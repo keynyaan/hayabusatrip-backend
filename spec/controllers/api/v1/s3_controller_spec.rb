@@ -30,7 +30,7 @@ RSpec.describe Api::V1::S3Controller do
       it "returns http success and public url" do
         post :upload, params: { file: image_file, filename: 'image_file.png' }
         expect(response).to have_http_status(:success)
-        expect(response.parsed_body["location"]).to eq("https://example.com/image_file.png")
+        expect(response.parsed_body["location"]).to eq("#{ENV['CLOUDFRONT_DOMAIN']}/image_file.png")
       end
     end
 
